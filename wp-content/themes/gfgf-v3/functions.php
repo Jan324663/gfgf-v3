@@ -34,6 +34,14 @@ add_action('wp_enqueue_scripts', function (): void {
         ['gfgf-v3-fonts'],
         wp_get_theme()->get('Version')
     );
+
+    wp_enqueue_script(
+        'gfgf-v3-header',
+        get_template_directory_uri() . '/assets/js/header.js',
+        [],
+        wp_get_theme()->get('Version'),
+        true
+    );
 });
 
 function gfgf_v3_primary_nav_items(): array

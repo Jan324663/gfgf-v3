@@ -18,7 +18,7 @@ defined('ABSPATH') || exit;
         <a class="site-brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('GFGF Startseite', 'gfgf-v3'); ?>">
             <span class="site-brand__name">GFGF e.V.</span>
         </a>
-        <nav class="site-navigation" aria-label="<?php esc_attr_e('Hauptnavigation', 'gfgf-v3'); ?>">
+        <nav id="primary-navigation" class="site-navigation" aria-label="<?php esc_attr_e('Hauptnavigation', 'gfgf-v3'); ?>">
             <?php
             $primary_menu = wp_nav_menu([
                 'theme_location' => 'primary',
@@ -52,7 +52,7 @@ defined('ABSPATH') || exit;
             <a class="button button--primary site-header__join" href="<?php echo esc_url(home_url('/mitgliedschaft/')); ?>">
                 <?php esc_html_e('Mitglied werden', 'gfgf-v3'); ?>
             </a>
-            <button class="icon-button site-header__menu" type="button" aria-label="<?php esc_attr_e('Menue oeffnen', 'gfgf-v3'); ?>">
+            <button class="icon-button site-header__menu" type="button" aria-label="<?php esc_attr_e('Menue oeffnen', 'gfgf-v3'); ?>" aria-controls="primary-navigation" aria-expanded="false">
                 <span aria-hidden="true">☰</span>
             </button>
         </div>
