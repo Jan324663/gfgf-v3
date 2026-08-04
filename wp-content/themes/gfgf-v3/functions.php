@@ -40,10 +40,8 @@ function gfgf_v3_primary_nav_items(): array
 {
     return [
         ['label' => __('Ueber uns', 'gfgf-v3'), 'url' => home_url('/ueber-uns/')],
-        ['label' => __('Veranstaltungen', 'gfgf-v3'), 'url' => home_url('/veranstaltungen/')],
-        ['label' => __('Funkgeschichte', 'gfgf-v3'), 'url' => home_url('/funkgeschichte/')],
-        ['label' => __('Radiorama', 'gfgf-v3'), 'url' => home_url('/radiorama/')],
-        ['label' => __('GFGF-Archiv', 'gfgf-v3'), 'url' => home_url('/das-gfgf-archiv/')],
+        ['label' => __('Archiv', 'gfgf-v3'), 'url' => home_url('/das-gfgf-archiv/')],
+        ['label' => __('Zeitung Funkgeschichte', 'gfgf-v3'), 'url' => home_url('/zeitung-funkgeschichte/')],
         ['label' => __('Mitgliedschaft', 'gfgf-v3'), 'url' => home_url('/mitgliedschaft/')],
     ];
 }

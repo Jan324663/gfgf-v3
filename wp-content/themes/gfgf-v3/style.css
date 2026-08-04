@@ -77,7 +77,7 @@ input:focus {
     align-items: center;
     justify-content: space-between;
     min-height: 80px;
-    gap: var(--gfgf-gutter);
+    gap: 28px;
 }
 
 .site-brand {
@@ -95,7 +95,7 @@ input:focus {
 }
 
 .site-navigation {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
 }
 
 .site-navigation__list,
@@ -103,7 +103,7 @@ input:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--gfgf-gutter);
+    gap: 30px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -131,6 +131,7 @@ input:focus {
     display: flex;
     align-items: center;
     gap: 16px;
+    flex: 0 0 auto;
 }
 
 .site-search {
@@ -196,13 +197,18 @@ input:focus {
 }
 
 .button--primary {
-    padding: 0 24px;
+    padding: 0 28px;
     color: var(--gfgf-on-primary);
     background: var(--gfgf-primary);
+    white-space: nowrap;
 }
 
 .button--primary:hover {
     background: var(--gfgf-primary-container);
+}
+
+.site-header__join {
+    min-width: 178px;
 }
 
 .icon-button {
