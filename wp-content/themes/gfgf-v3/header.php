@@ -13,6 +13,7 @@ defined('ABSPATH') || exit;
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<a class="skip-link" href="#content"><?php esc_html_e('Zum Inhalt springen', 'gfgf-v3'); ?></a>
 <header class="site-header">
     <div class="site-header__inner">
         <a class="site-brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('GFGF Startseite', 'gfgf-v3'); ?>">
@@ -52,8 +53,16 @@ defined('ABSPATH') || exit;
             <a class="button button--primary site-header__join" href="<?php echo esc_url(home_url('/mitgliedschaft/')); ?>">
                 <?php esc_html_e('Mitglied werden', 'gfgf-v3'); ?>
             </a>
-            <button class="icon-button site-header__menu" type="button" aria-label="<?php esc_attr_e('Menue oeffnen', 'gfgf-v3'); ?>" aria-controls="primary-navigation" aria-expanded="false">
-                <span aria-hidden="true">☰</span>
+            <button
+                class="icon-button site-header__menu"
+                type="button"
+                aria-label="<?php esc_attr_e('Menü öffnen', 'gfgf-v3'); ?>"
+                aria-controls="primary-navigation"
+                aria-expanded="false"
+                data-open-label="<?php esc_attr_e('Menü öffnen', 'gfgf-v3'); ?>"
+                data-close-label="<?php esc_attr_e('Menü schließen', 'gfgf-v3'); ?>"
+            >
+                <span class="site-header__menu-icon" aria-hidden="true"></span>
             </button>
         </div>
     </div>

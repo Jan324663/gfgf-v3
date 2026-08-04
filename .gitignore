@@ -23,9 +23,9 @@ node_modules/
 vendor/
 dist/
 build/
+responsive-audit/
 
 # Archives
 *.zip
 *.tar
 *.tar.gz
-
