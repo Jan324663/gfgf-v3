@@ -1,0 +1,31 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Secrets and local overrides
+.env
+.env.*
+!config/.env.example
+secrets/
+*.local.*
+
+# WordPress runtime data
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+wp-content/debug.log
+
+# Dependencies / build output
+node_modules/
+vendor/
+dist/
+build/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+

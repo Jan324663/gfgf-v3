@@ -1,0 +1,94 @@
+/*
+Theme Name: GFGF V3
+Theme URI: https://www.gfgf.org/
+Author: GFGF
+Description: Eigenes WordPress-Theme fuer gfgf.org V3.
+Version: 0.1.0
+Requires at least: 6.0
+Tested up to: 6.8
+Requires PHP: 8.1
+Text Domain: gfgf-v3
+*/
+
+:root {
+    --gfgf-blue: #2f6f9f;
+    --gfgf-blue-dark: #174968;
+    --gfgf-gray-050: #f7f8f9;
+    --gfgf-gray-100: #eef1f3;
+    --gfgf-gray-700: #3b4146;
+    --gfgf-text: #1e252b;
+    --gfgf-border: #d8dee3;
+    --gfgf-focus: #c68a2f;
+}
+
+body {
+    margin: 0;
+    color: var(--gfgf-text);
+    background: var(--gfgf-gray-100);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+a {
+    color: var(--gfgf-blue-dark);
+}
+
+a:focus,
+button:focus,
+input:focus {
+    outline: 3px solid var(--gfgf-focus);
+    outline-offset: 2px;
+}
+
+.site-header {
+    background: var(--gfgf-blue);
+    color: #fff;
+}
+
+.site-header__inner,
+.site-main,
+.site-footer__inner {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+}
+
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 88px;
+    gap: 24px;
+}
+
+.site-title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.site-description {
+    margin: 2px 0 0;
+    font-size: 14px;
+}
+
+.site-main {
+    background: #fff;
+    min-height: 60vh;
+    padding: 32px 0 48px;
+}
+
+.content-area {
+    padding: 0 24px;
+}
+
+.site-footer {
+    background: var(--gfgf-gray-700);
+    color: #fff;
+    padding: 28px 0;
+}
+
+.site-footer a {
+    color: #fff;
+}
+
