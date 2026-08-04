@@ -363,8 +363,9 @@ input:focus {
 
 @media (max-width: 720px) {
     .site-header__inner {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
         align-items: flex-start;
-        flex-wrap: wrap;
         min-height: 72px;
         padding: 12px 0;
     }
@@ -379,22 +380,32 @@ input:focus {
     }
 
     .site-header__actions {
-        justify-content: flex-end;
-        gap: 10px;
-        width: auto;
+        display: contents;
     }
 
     .site-search {
-        order: 3;
-        flex-basis: 100%;
+        grid-column: 1 / -1;
+        grid-row: 2;
         width: 100%;
         min-width: 0;
+        margin-top: 12px;
+    }
+
+    .site-header__menu {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
     }
 
     .site-search__field,
     .site-search__button {
         min-height: 52px;
         font-size: 17px;
+    }
+
+    .site-navigation {
+        grid-column: 1 / -1;
+        grid-row: 3;
     }
 
     .site-footer__inner {
