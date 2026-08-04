@@ -22,10 +22,39 @@ add_action('after_setup_theme', function (): void {
 
 add_action('wp_enqueue_scripts', function (): void {
     wp_enqueue_style(
+        'gfgf-v3-fonts',
+        'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap',
+        [],
+        null
+    );
+
+    wp_enqueue_style(
         'gfgf-v3-style',
         get_stylesheet_uri(),
-        [],
+        ['gfgf-v3-fonts'],
         wp_get_theme()->get('Version')
     );
 });
 
+function gfgf_v3_primary_nav_items(): array
+{
+    return [
+        ['label' => __('Ueber uns', 'gfgf-v3'), 'url' => home_url('/ueber-uns/')],
+        ['label' => __('Veranstaltungen', 'gfgf-v3'), 'url' => home_url('/veranstaltungen/')],
+        ['label' => __('Funkgeschichte', 'gfgf-v3'), 'url' => home_url('/funkgeschichte/')],
+        ['label' => __('Radiorama', 'gfgf-v3'), 'url' => home_url('/radiorama/')],
+        ['label' => __('GFGF-Archiv', 'gfgf-v3'), 'url' => home_url('/das-gfgf-archiv/')],
+        ['label' => __('Mitgliedschaft', 'gfgf-v3'), 'url' => home_url('/mitgliedschaft/')],
+    ];
+}
+
+function gfgf_v3_footer_nav_items(): array
+{
+    return [
+        ['label' => __('Impressum', 'gfgf-v3'), 'url' => home_url('/impressum/')],
+        ['label' => __('Datenschutz', 'gfgf-v3'), 'url' => home_url('/datenschutz/')],
+        ['label' => __('Kontakt', 'gfgf-v3'), 'url' => home_url('/kontakt/')],
+        ['label' => __('Satzung', 'gfgf-v3'), 'url' => home_url('/satzung/')],
+        ['label' => __('Spenden', 'gfgf-v3'), 'url' => home_url('/spenden/')],
+    ];
+}
