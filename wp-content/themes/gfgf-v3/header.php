@@ -44,9 +44,11 @@ defined('ABSPATH') || exit;
             ?>
         </nav>
         <div class="site-header__actions">
-            <a class="icon-button" href="<?php echo esc_url(home_url('/?s=')); ?>" aria-label="<?php esc_attr_e('Suche oeffnen', 'gfgf-v3'); ?>">
-                <span aria-hidden="true">⌕</span>
-            </a>
+            <form class="site-search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+                <label class="screen-reader-text" for="site-search-field"><?php esc_html_e('Website durchsuchen', 'gfgf-v3'); ?></label>
+                <input id="site-search-field" class="site-search__field" type="search" name="s" placeholder="<?php esc_attr_e('Suche', 'gfgf-v3'); ?>" value="<?php echo esc_attr(get_search_query()); ?>">
+                <button class="site-search__button" type="submit"><?php esc_html_e('Suchen', 'gfgf-v3'); ?></button>
+            </form>
             <a class="button button--primary site-header__join" href="<?php echo esc_url(home_url('/mitgliedschaft/')); ?>">
                 <?php esc_html_e('Mitglied werden', 'gfgf-v3'); ?>
             </a>
