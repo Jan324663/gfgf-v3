@@ -58,6 +58,12 @@
     text-transform: uppercase;
 }
 
+.editor-styles-wrapper .archive-source-card--featured {
+    grid-column: 1 / -1;
+    background: #eff4ff;
+    border-left: 4px solid #003f83;
+}
+
 .editor-styles-wrapper .archive-collection,
 .editor-styles-wrapper .archive-teaser,
 .editor-styles-wrapper .archive-download-group {

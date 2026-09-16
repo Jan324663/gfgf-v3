@@ -81,6 +81,14 @@ $museums = [
 
 $communities = [
     [
+        'title' => 'Radio-Bastler-Forum',
+        'meta' => 'Eng mit der GFGF verbunden',
+        'description' => 'Eine aktive deutschsprachige Gemeinschaft rund um historische Radios, Reparatur, Restaurierung und Messtechnik. Zwischen dem Radio-Bastler-Forum und der GFGF besteht ein enger fachlicher und persönlicher Austausch.',
+        'url' => 'https://www.radio-bastler.de/forum/',
+        'button_label' => 'Zum Radio-Bastler-Forum',
+        'featured' => true,
+    ],
+    [
         'title' => 'Rádiógyűjtők Magyarországi Klubja (RMK)',
         'meta' => 'Ungarn',
         'description' => 'Ungarische Vereinigung für Sammler historischer Radiotechnik. Der Klub wurde in der bisherigen GFGF-Linkliste als Kooperationspartner geführt.',
@@ -91,12 +99,6 @@ $communities = [
         'meta' => 'Schweiz',
         'description' => 'Schweizer Sammlergemeinschaft für historische Radios, Grammophone und verwandte Technik.',
         'url' => 'https://www.crgs.ch/',
-    ],
-    [
-        'title' => 'Radio-Bastler-Forum',
-        'meta' => 'Online-Gemeinschaft',
-        'description' => 'Aktive deutschsprachige Gemeinschaft für Fragen zu historischen Radios, Reparaturen, Restaurierungen und Messtechnik.',
-        'url' => 'https://www.radio-bastler.de/forum/',
     ],
 ];
 
@@ -134,9 +136,14 @@ $special_sources = [
 ];
 
 $render_source_card = static function (array $source): void {
+    $card_class = 'archive-source-card';
+    if (!empty($source['featured'])) {
+        $card_class .= ' archive-source-card--featured';
+    }
+    $button_label = $source['button_label'] ?? 'Website besuchen';
     ?>
-<!-- wp:group {"className":"archive-source-card"} -->
-<div class="wp-block-group archive-source-card"><!-- wp:paragraph {"className":"archive-source-card__meta"} -->
+<!-- wp:group {"className":"<?php echo esc_attr($card_class); ?>"} -->
+<div class="wp-block-group <?php echo esc_attr($card_class); ?>"><!-- wp:paragraph {"className":"archive-source-card__meta"} -->
 <p class="archive-source-card__meta"><?php echo esc_html($source['meta']); ?></p>
 <!-- /wp:paragraph -->
 
@@ -150,7 +157,7 @@ $render_source_card = static function (array $source): void {
 
 <!-- wp:buttons -->
 <div class="wp-block-buttons"><!-- wp:button {"className":"archive-source-card__button"} -->
-<div class="wp-block-button archive-source-card__button"><a class="wp-block-button__link wp-element-button" href="<?php echo esc_url($source['url']); ?>" target="_blank" rel="noreferrer noopener">Website besuchen <span aria-hidden="true">↗</span><span class="screen-reader-text"> (öffnet in einem neuen Tab)</span></a></div>
+<div class="wp-block-button archive-source-card__button"><a class="wp-block-button__link wp-element-button" href="<?php echo esc_url($source['url']); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($button_label); ?> <span aria-hidden="true">↗</span><span class="screen-reader-text"> (öffnet in einem neuen Tab)</span></a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons --></div>
 <!-- /wp:group -->

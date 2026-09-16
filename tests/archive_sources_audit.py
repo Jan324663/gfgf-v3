@@ -47,6 +47,16 @@ with sync_playwright() as playwright:
             "Externe Angebote",
         ]
         assert page.locator(".archive-source-card").count() == 18
+        featured = page.locator(".archive-source-card--featured")
+        assert featured.count() == 1
+        assert featured.locator("h3").inner_text() == "Radio-Bastler-Forum"
+        assert featured.locator(".archive-source-card__meta").inner_text() == (
+            "ENG MIT DER GFGF VERBUNDEN"
+        )
+        assert "enger fachlicher und persönlicher Austausch" in featured.locator(
+            "p:not(.archive-source-card__meta)"
+        ).inner_text()
+        assert featured.locator("a").inner_text().startswith("Zum Radio-Bastler-Forum")
         assert page.locator(".archive-source-grid").count() == 4
         assert page.locator(".archive-museum-finder").count() == 1
         assert page.locator(".archive-source-card__button a").count() == 18
@@ -70,6 +80,15 @@ with sync_playwright() as playwright:
             "element => getComputedStyle(element).gridTemplateColumns.split(' ').length"
         )
         assert columns == (1 if width <= 720 else 2)
+
+        if width > 720:
+            featured_width = featured.evaluate(
+                "element => element.getBoundingClientRect().width"
+            )
+            community_grid_width = featured.evaluate(
+                "element => element.closest('.archive-source-grid').getBoundingClientRect().width"
+            )
+            assert abs(featured_width - community_grid_width) < 1
 
         if width <= 720:
             heights = external_links.evaluate_all(

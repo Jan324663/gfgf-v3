@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.13.0
+Version: 0.13.1
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -1262,6 +1262,25 @@ input:focus-visible {
     box-shadow: 0 4px 16px rgba(18, 28, 42, 0.055);
 }
 
+.archive-source-card--featured {
+    grid-column: 1 / -1;
+    padding: 30px;
+    background: linear-gradient(110deg, #edf4ff 0%, var(--gfgf-surface) 100%);
+    border-left: 4px solid var(--gfgf-primary);
+}
+
+.archive-source-card--featured .archive-source-card__meta {
+    color: var(--gfgf-primary);
+}
+
+.archive-source-card--featured h3 {
+    font-size: 24px;
+}
+
+.archive-source-card--featured > p:not(.archive-source-card__meta) {
+    max-width: 920px;
+}
+
 .archive-source-card__meta {
     margin: 0 0 7px;
     color: var(--gfgf-tertiary);
@@ -1790,6 +1809,10 @@ input:focus-visible {
 
     .archive-source-card {
         padding: 24px 22px;
+    }
+
+    .archive-source-card--featured {
+        padding-left: 20px;
     }
 
     .archive-source-card__button,

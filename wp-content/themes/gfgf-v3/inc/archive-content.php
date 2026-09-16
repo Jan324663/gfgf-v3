@@ -221,3 +221,115 @@ function gfgf_v3_migrate_archive_sources_page(): void
     }
 }
 add_action('init', 'gfgf_v3_migrate_archive_sources_page', 32);
+
+/**
+ * Promote the Radio-Bastler-Forum without rebuilding or overwriting the page.
+ *
+ * The narrowly matched former card is moved to the beginning of its existing
+ * Gutenberg grid and replaced with an ordinary, still editable featured card.
+ */
+function gfgf_v3_upgrade_archive_sources_forum(): void
+{
+    $upgrade_version = '2026-09-16-archive-sources-forum-v1';
+
+    if ($upgrade_version === get_option('gfgf_v3_archive_sources_forum_upgrade')) {
+        return;
+    }
+
+    $page = get_page_by_path('weitere-archive-quellen', OBJECT, 'page');
+
+    if (!$page instanceof WP_Post) {
+        return;
+    }
+
+    $content = (string) $page->post_content;
+
+    if (str_contains($content, 'archive-source-card--featured')) {
+        update_option('gfgf_v3_archive_sources_forum_upgrade', $upgrade_version, false);
+        return;
+    }
+
+    $expected_markers = [
+        '<h2 class="wp-block-heading">Vereine &amp; Sammlergemeinschaften</h2>',
+        '<h3 class="wp-block-heading">Radio-Bastler-Forum</h3>',
+        'Aktive deutschsprachige Gemeinschaft für Fragen zu historischen Radios, Reparaturen, Restaurierungen und Messtechnik.',
+        '>Website besuchen <span aria-hidden="true">↗</span>',
+    ];
+
+    foreach ($expected_markers as $marker) {
+        if (!str_contains($content, $marker)) {
+            return;
+        }
+    }
+
+    $card_open = '<!-- wp:group {"className":"archive-source-card"} -->';
+    $card_close = "<!-- /wp:buttons --></div>\n<!-- /wp:group -->";
+    $title_position = strpos($content, '<h3 class="wp-block-heading">Radio-Bastler-Forum</h3>');
+
+    if (false === $title_position) {
+        return;
+    }
+
+    $card_start = strrpos(substr($content, 0, $title_position), $card_open);
+    $card_end_start = strpos($content, $card_close, $title_position);
+
+    if (false === $card_start || false === $card_end_start) {
+        return;
+    }
+
+    $card_end = $card_end_start + strlen($card_close);
+    $content_without_old_card = substr($content, 0, $card_start) . substr($content, $card_end);
+    $section_position = strpos(
+        $content_without_old_card,
+        '<h2 class="wp-block-heading">Vereine &amp; Sammlergemeinschaften</h2>'
+    );
+    $grid_open = '<div class="wp-block-group archive-source-grid">';
+    $grid_position = false === $section_position
+        ? false
+        : strpos($content_without_old_card, $grid_open, $section_position);
+
+    if (false === $grid_position) {
+        return;
+    }
+
+    $insert_position = $grid_position + strlen($grid_open);
+    $featured_card = <<<'HTML'
+<!-- wp:group {"className":"archive-source-card archive-source-card--featured"} -->
+<div class="wp-block-group archive-source-card archive-source-card--featured"><!-- wp:paragraph {"className":"archive-source-card__meta"} -->
+<p class="archive-source-card__meta">Eng mit der GFGF verbunden</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Radio-Bastler-Forum</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Eine aktive deutschsprachige Gemeinschaft rund um historische Radios, Reparatur, Restaurierung und Messtechnik. Zwischen dem Radio-Bastler-Forum und der GFGF besteht ein enger fachlicher und persönlicher Austausch.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons -->
+<div class="wp-block-buttons"><!-- wp:button {"className":"archive-source-card__button"} -->
+<div class="wp-block-button archive-source-card__button"><a class="wp-block-button__link wp-element-button" href="https://www.radio-bastler.de/forum/" target="_blank" rel="noreferrer noopener">Zum Radio-Bastler-Forum <span aria-hidden="true">↗</span><span class="screen-reader-text"> (öffnet in einem neuen Tab)</span></a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons --></div>
+<!-- /wp:group -->
+HTML;
+
+    $upgraded_content = substr($content_without_old_card, 0, $insert_position)
+        . "\n"
+        . $featured_card
+        . substr($content_without_old_card, $insert_position);
+
+    $result = wp_update_post(
+        wp_slash([
+            'ID'           => $page->ID,
+            'post_content' => $upgraded_content,
+        ]),
+        true
+    );
+
+    if (!is_wp_error($result)) {
+        update_option('gfgf_v3_archive_sources_forum_upgrade', $upgrade_version, false);
+    }
+}
+add_action('init', 'gfgf_v3_upgrade_archive_sources_forum', 33);
