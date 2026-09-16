@@ -87,12 +87,149 @@ function gfgf_v3_page_url(string $slug): string
 function gfgf_v3_primary_nav_items(): array
 {
     return [
-        ['label' => __('Über uns', 'gfgf-v3'), 'url' => gfgf_v3_page_url('ueber-uns')],
-        ['label' => __('Archiv', 'gfgf-v3'), 'url' => gfgf_v3_page_url('das-gfgf-archiv')],
-        ['label' => __('Funkgeschichte', 'gfgf-v3'), 'url' => gfgf_v3_page_url('funkgeschichte')],
-        ['label' => __('Mitgliedschaft', 'gfgf-v3'), 'url' => gfgf_v3_page_url('mitgliedschaft')],
+        ['label' => __('Über uns', 'gfgf-v3'), 'slug' => 'ueber-uns', 'url' => gfgf_v3_page_url('ueber-uns')],
+        ['label' => __('Archiv', 'gfgf-v3'), 'slug' => 'das-gfgf-archiv', 'url' => gfgf_v3_page_url('das-gfgf-archiv')],
+        ['label' => __('Funkgeschichte', 'gfgf-v3'), 'slug' => 'funkgeschichte', 'url' => gfgf_v3_page_url('funkgeschichte')],
+        ['label' => __('Mitgliedschaft', 'gfgf-v3'), 'slug' => 'mitgliedschaft', 'url' => gfgf_v3_page_url('mitgliedschaft')],
     ];
 }
+
+/**
+ * Return the current top-level section represented in the primary navigation.
+ *
+ * WordPress page ancestry is the primary source of truth. The template map is
+ * deliberately small and only covers existing pages that predate that page
+ * hierarchy. It can be extended without adding URL checks to the header.
+ *
+ * @return array{slug:string,root_id:int,is_root:bool}|null
+ */
+function gfgf_v3_active_primary_section(): ?array
+{
+    static $resolved = false;
+    static $section = null;
+
+    if ($resolved) {
+        return $section;
+    }
+
+    $resolved = true;
+
+    if (!is_page()) {
+        return null;
+    }
+
+    $current_id = (int) get_queried_object_id();
+    if ($current_id < 1) {
+        return null;
+    }
+
+    $lineage = array_merge([$current_id], array_map('intval', get_post_ancestors($current_id)));
+    $roots = [];
+
+    foreach (gfgf_v3_primary_nav_items() as $item) {
+        $root_page = get_page_by_path($item['slug'], OBJECT, 'page');
+        if (!$root_page instanceof WP_Post) {
+            continue;
+        }
+
+        $root_id = (int) $root_page->ID;
+        $roots[$item['slug']] = $root_id;
+
+        if (in_array($root_id, $lineage, true)) {
+            $section = [
+                'slug'    => $item['slug'],
+                'root_id' => $root_id,
+                'is_root' => $current_id === $root_id,
+            ];
+
+            return $section;
+        }
+    }
+
+    /**
+     * Map legacy standalone page templates to a primary section.
+     *
+     * Pages arranged below a main page in the WordPress page hierarchy do not
+     * need an entry here. Themes or child themes can extend this map using the
+     * `gfgf_v3_primary_section_template_map` filter.
+     *
+     * @var array<string,array<int,string>> $template_map
+     */
+    $template_map = apply_filters('gfgf_v3_primary_section_template_map', [
+        'das-gfgf-archiv' => [
+            'page-das-gfgf-archiv.php',
+            'page-archiv-besuchen.php',
+            'page-schaltplanservice.php',
+            'page-weitere-archive-quellen.php',
+        ],
+    ]);
+
+    $current_template = get_page_template_slug($current_id);
+
+    foreach ($template_map as $root_slug => $templates) {
+        if (!isset($roots[$root_slug]) || !in_array($current_template, $templates, true)) {
+            continue;
+        }
+
+        $section = [
+            'slug'    => $root_slug,
+            'root_id' => $roots[$root_slug],
+            'is_root' => $current_id === $roots[$root_slug],
+        ];
+
+        return $section;
+    }
+
+    return null;
+}
+
+/**
+ * Check whether a WordPress menu item represents the active primary section.
+ */
+function gfgf_v3_is_active_primary_menu_item(WP_Post $menu_item): bool
+{
+    $section = gfgf_v3_active_primary_section();
+    if (null === $section) {
+        return false;
+    }
+
+    if ('page' === $menu_item->object && (int) $menu_item->object_id === $section['root_id']) {
+        return true;
+    }
+
+    foreach (gfgf_v3_primary_nav_items() as $item) {
+        if ($item['slug'] !== $section['slug']) {
+            continue;
+        }
+
+        return untrailingslashit((string) $menu_item->url) === untrailingslashit($item['url']);
+    }
+
+    return false;
+}
+
+add_filter('nav_menu_css_class', function (array $classes, WP_Post $menu_item, stdClass $args, int $depth): array {
+    if ('primary' !== ($args->theme_location ?? '') || 0 !== $depth || !gfgf_v3_is_active_primary_menu_item($menu_item)) {
+        return $classes;
+    }
+
+    $section = gfgf_v3_active_primary_section();
+    $classes[] = 'is-active-section';
+    $classes[] = $section && $section['is_root'] ? 'current-menu-item' : 'current-menu-ancestor';
+
+    return array_values(array_unique($classes));
+}, 10, 4);
+
+add_filter('nav_menu_link_attributes', function (array $attributes, WP_Post $menu_item, stdClass $args, int $depth): array {
+    if ('primary' !== ($args->theme_location ?? '') || 0 !== $depth || !gfgf_v3_is_active_primary_menu_item($menu_item)) {
+        return $attributes;
+    }
+
+    $section = gfgf_v3_active_primary_section();
+    $attributes['aria-current'] = $section && $section['is_root'] ? 'page' : 'location';
+
+    return $attributes;
+}, 10, 4);
 
 function gfgf_v3_footer_nav_items(): array
 {

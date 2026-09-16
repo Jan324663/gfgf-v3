@@ -45,10 +45,26 @@ defined('ABSPATH') || exit;
                 echo $primary_menu; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             } else {
                 echo '<ul class="site-navigation__list">';
+                $active_section = gfgf_v3_active_primary_section();
                 foreach (gfgf_v3_primary_nav_items() as $item) {
+                    $is_active = $active_section && $active_section['slug'] === $item['slug'];
+                    $item_class = '';
+                    $aria_current = '';
+
+                    if ($is_active) {
+                        $item_class = $active_section['is_root']
+                            ? ' class="is-active-section current-menu-item"'
+                            : ' class="is-active-section current-menu-ancestor"';
+                        $aria_current = $active_section['is_root']
+                            ? ' aria-current="page"'
+                            : ' aria-current="location"';
+                    }
+
                     printf(
-                        '<li><a href="%s">%s</a></li>',
+                        '<li%s><a href="%s"%s>%s</a></li>',
+                        $item_class, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static class names only.
                         esc_url($item['url']),
+                        $aria_current, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static ARIA values only.
                         esc_html($item['label'])
                     );
                 }
