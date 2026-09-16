@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.2.0
+Version: 0.3.0
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -335,6 +335,118 @@ input:focus {
     overflow-wrap: break-word;
 }
 
+.archive-landing {
+    padding: 64px 0 72px;
+}
+
+.archive-landing__container {
+    width: min(var(--gfgf-max-width), calc(100% - (var(--gfgf-margin-desktop) * 2)));
+    margin: 0 auto;
+}
+
+.archive-landing__intro-inner {
+    max-width: 980px;
+    margin-bottom: 40px;
+}
+
+.archive-landing__intro h1 {
+    margin: 0 0 16px;
+    color: var(--gfgf-primary);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.16;
+    letter-spacing: -0.02em;
+}
+
+.archive-landing__intro p {
+    max-width: 920px;
+    margin: 0;
+    color: var(--gfgf-text-muted);
+    font-size: 19px;
+    line-height: 1.65;
+}
+
+.archive-teasers {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: var(--gfgf-gutter);
+}
+
+.archive-teaser {
+    display: flex;
+    min-width: 0;
+    min-height: 100%;
+    flex-direction: column;
+    padding: 32px;
+    background: var(--gfgf-surface);
+    border: 1px solid var(--gfgf-border);
+    border-radius: 8px;
+    box-shadow: 0 5px 18px rgba(18, 28, 42, 0.07);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.archive-teaser:hover,
+.archive-teaser:focus-within {
+    border-color: rgba(0, 63, 131, 0.55);
+    box-shadow: 0 8px 24px rgba(18, 28, 42, 0.1);
+}
+
+.archive-teaser__content {
+    flex: 1 1 auto;
+}
+
+.archive-teaser h2,
+.archive-offer h2 {
+    margin: 0;
+    color: var(--gfgf-primary);
+    font-size: 25px;
+    line-height: 1.28;
+    letter-spacing: -0.01em;
+}
+
+.archive-teaser p {
+    margin: 16px 0 28px;
+    color: var(--gfgf-text-muted);
+    font-size: 17px;
+    line-height: 1.65;
+}
+
+.archive-teaser__button {
+    align-self: flex-start;
+}
+
+.archive-offer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    margin-top: 40px;
+    padding: 24px 28px;
+    background: var(--gfgf-surface-low);
+    border: 1px solid var(--gfgf-border);
+    border-left: 4px solid var(--gfgf-primary);
+    border-radius: 6px;
+}
+
+.archive-offer__content {
+    max-width: 920px;
+}
+
+.archive-offer h2 {
+    font-size: 22px;
+}
+
+.archive-offer p {
+    margin: 8px 0 0;
+    color: var(--gfgf-text-muted);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.archive-offer__button {
+    flex: 0 0 auto;
+}
+
 .site-footer {
     color: var(--gfgf-text);
     background: var(--gfgf-surface-dim);
@@ -455,8 +567,21 @@ input:focus {
 @media (max-width: 980px) {
     .site-header__inner,
     .site-footer__inner,
-    .content-area {
+    .content-area,
+    .archive-landing__container {
         width: min(100% - (var(--gfgf-margin-mobile) * 2), var(--gfgf-max-width));
+    }
+
+    .archive-landing {
+        padding: 52px 0 64px;
+    }
+
+    .archive-teasers {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .archive-teaser:last-child {
+        grid-column: 1 / -1;
     }
 }
 
@@ -560,6 +685,42 @@ input:focus {
 
     .content-area {
         padding: 36px 0 48px;
+    }
+
+    .archive-landing {
+        padding: 40px 0 48px;
+    }
+
+    .archive-landing__intro-inner {
+        margin-bottom: 28px;
+    }
+
+    .archive-landing__intro p {
+        font-size: 18px;
+    }
+
+    .archive-teasers {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .archive-teaser:last-child {
+        grid-column: auto;
+    }
+
+    .archive-teaser {
+        padding: 26px 24px;
+    }
+
+    .archive-teaser h2 {
+        font-size: 23px;
+    }
+
+    .archive-offer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 28px;
+        padding: 22px 20px;
     }
 }
 

@@ -30,7 +30,7 @@ function Get-FtpCredentials {
 
 function Ensure-FtpDirectory {
     param(
-        [string]$Host,
+        [string]$FtpHost,
         [string]$User,
         [string]$Pass,
         [string]$RemotePath
@@ -40,7 +40,7 @@ function Ensure-FtpDirectory {
     $current = ""
     foreach ($part in $parts) {
         $current = "$current/$part"
-        & curl.exe --noproxy "*" --silent --show-error --ftp-create-dirs --user "${User}:${Pass}" "ftp://${Host}${current}/" | Out-Null
+        & curl.exe --noproxy "*" --silent --show-error --ftp-create-dirs --user "${User}:${Pass}" "ftp://${FtpHost}${current}/" | Out-Null
     }
 }
 
@@ -48,12 +48,12 @@ function Send-FtpDirectory {
     param(
         [string]$LocalPath,
         [string]$RemotePath,
-        [string]$Host,
+        [string]$FtpHost,
         [string]$User,
         [string]$Pass
     )
 
-    Ensure-FtpDirectory -Host $Host -User $User -Pass $Pass -RemotePath $RemotePath
+    Ensure-FtpDirectory -FtpHost $FtpHost -User $User -Pass $Pass -RemotePath $RemotePath
 
     Get-ChildItem -LiteralPath $LocalPath -Recurse -File | ForEach-Object {
         $relative = $_.FullName.Substring($LocalPath.Length).TrimStart("\", "/")
@@ -61,8 +61,8 @@ function Send-FtpDirectory {
         $remoteDir = Split-Path -Parent $remoteFile
         $remoteDir = $remoteDir -replace "\\", "/"
 
-        Ensure-FtpDirectory -Host $Host -User $User -Pass $Pass -RemotePath $remoteDir
-        & curl.exe --noproxy "*" --silent --show-error --ftp-create-dirs --user "${User}:${Pass}" --upload-file $_.FullName "ftp://${Host}${remoteFile}"
+        Ensure-FtpDirectory -FtpHost $FtpHost -User $User -Pass $Pass -RemotePath $remoteDir
+        & curl.exe --noproxy "*" --silent --show-error --ftp-create-dirs --user "${User}:${Pass}" --upload-file $_.FullName "ftp://${FtpHost}${remoteFile}"
         Write-Host "Uploaded $relative"
     }
 }
@@ -79,6 +79,5 @@ foreach ($item in $deployItems) {
     if (-not (Test-Path -LiteralPath $item.Local)) {
         throw "Local deploy path missing: $($item.Local)"
     }
-    Send-FtpDirectory -LocalPath $item.Local -RemotePath $item.Remote -Host $creds.Host -User $creds.User -Pass $creds.Pass
+    Send-FtpDirectory -LocalPath $item.Local -RemotePath $item.Remote -FtpHost $creds.Host -User $creds.User -Pass $creds.Pass
 }
-
