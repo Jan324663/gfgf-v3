@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.12.0
+Version: 0.12.1
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -69,9 +69,13 @@ a {
     text-underline-offset: 0.18em;
 }
 
-a:focus,
-button:focus,
-input:focus {
+a:focus-visible {
+    outline: 2px solid var(--gfgf-primary);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+input:focus-visible {
     outline: 2px solid var(--gfgf-focus);
     outline-offset: 2px;
 }
@@ -871,7 +875,7 @@ input:focus {
 }
 
 .archive-collection__more .wp-block-button__link:focus-visible {
-    outline: 3px solid var(--gfgf-focus);
+    outline: 3px solid var(--gfgf-primary);
     outline-offset: 3px;
     border-radius: 2px;
 }

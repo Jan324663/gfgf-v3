@@ -141,6 +141,20 @@ with sync_playwright() as playwright:
                 "elements => elements.map(element => element.getBoundingClientRect().height)"
             )
             assert max(card_heights) - min(card_heights) < 0.2
+        first_teaser_link = page.locator(
+            ".archive-teaser__button .wp-block-button__link"
+        ).first
+        first_teaser_link.evaluate(
+            "element => element.addEventListener('click', event => event.preventDefault(), {once: true})"
+        )
+        first_teaser_link.click()
+        assert computed_px(
+            page, ".archive-teaser__button .wp-block-button__link", "outline-width"
+        ) == 0
+        page.keyboard.press("Tab")
+        assert page.locator(":focus").evaluate(
+            "element => element.matches(':focus-visible')"
+        )
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
         if width > 1000:
             assert_internal_links(page, LANDING_URL)
