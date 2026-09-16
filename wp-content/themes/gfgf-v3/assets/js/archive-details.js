@@ -1,84 +1,56 @@
 (() => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const dialog = document.querySelector('#archive-collection-dialog');
+    const triggers = document.querySelectorAll('.archive-collection__more');
 
-    class ArchiveDisclosure {
-        constructor(element) {
-            this.element = element;
-            this.summary = element.querySelector('summary');
-            this.content = element.querySelector('.archive-collection__details-content');
-            this.animation = null;
-            this.isClosing = false;
-            this.isExpanding = false;
-
-            if (!this.summary || !this.content || typeof element.animate !== 'function') {
-                return;
-            }
-
-            this.summary.addEventListener('click', (event) => this.handleClick(event));
-        }
-
-        handleClick(event) {
-            if (reduceMotion.matches) {
-                return;
-            }
-
-            event.preventDefault();
-            this.element.style.overflow = 'hidden';
-
-            if (this.isClosing || !this.element.open) {
-                this.open();
-            } else {
-                this.close();
-            }
-        }
-
-        getClosedHeight() {
-            const style = window.getComputedStyle(this.element);
-            const borders = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
-
-            return this.summary.offsetHeight + borders;
-        }
-
-        animateHeight(startHeight, endHeight, open) {
-            if (this.animation) {
-                this.animation.cancel();
-            }
-
-            this.isClosing = !open;
-            this.isExpanding = open;
-            this.animation = this.element.animate(
-                { height: [`${startHeight}px`, `${endHeight}px`] },
-                { duration: 220, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' }
-            );
-            this.animation.onfinish = () => this.finish(open);
-        }
-
-        open() {
-            const startHeight = this.element.offsetHeight;
-            this.element.style.height = `${startHeight}px`;
-            this.element.open = true;
-
-            window.requestAnimationFrame(() => {
-                const endHeight = this.getClosedHeight() + this.content.offsetHeight;
-                this.animateHeight(startHeight, endHeight, true);
-            });
-        }
-
-        close() {
-            this.animateHeight(this.element.offsetHeight, this.getClosedHeight(), false);
-        }
-
-        finish(open) {
-            this.element.open = open;
-            this.element.style.height = '';
-            this.element.style.overflow = '';
-            this.animation = null;
-            this.isClosing = false;
-            this.isExpanding = false;
-        }
+    if (!dialog || !triggers.length || typeof dialog.showModal !== 'function') {
+        return;
     }
 
-    document.querySelectorAll('.archive-collection__details').forEach((element) => {
-        new ArchiveDisclosure(element);
+    const title = dialog.querySelector('#archive-dialog-title');
+    const text = dialog.querySelector('#archive-dialog-text');
+    const download = dialog.querySelector('.archive-collection-dialog__download');
+    const downloadLabel = dialog.querySelector('.archive-collection-dialog__download-label');
+    const closeButton = dialog.querySelector('.archive-collection-dialog__close');
+    let previousTrigger = null;
+
+    const closeDialog = () => {
+        if (dialog.open) {
+            dialog.close();
+        }
+    };
+
+    triggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+            previousTrigger = trigger;
+            title.textContent = trigger.dataset.dialogTitle || '';
+            text.textContent = trigger.dataset.dialogText || '';
+
+            if (trigger.dataset.dialogDownloadUrl && trigger.dataset.dialogDownloadLabel) {
+                download.href = trigger.dataset.dialogDownloadUrl;
+                downloadLabel.textContent = trigger.dataset.dialogDownloadLabel;
+                download.hidden = false;
+            } else {
+                download.hidden = true;
+                download.removeAttribute('href');
+                downloadLabel.textContent = '';
+            }
+
+            dialog.showModal();
+            closeButton.focus();
+        });
+    });
+
+    closeButton.addEventListener('click', closeDialog);
+
+    dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) {
+            closeDialog();
+        }
+    });
+
+    dialog.addEventListener('close', () => {
+        if (previousTrigger && document.contains(previousTrigger)) {
+            previousTrigger.focus();
+        }
     });
 })();

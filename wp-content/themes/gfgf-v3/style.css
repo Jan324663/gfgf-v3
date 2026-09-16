@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.9.1
+Version: 0.10.0
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -731,58 +731,118 @@ input:focus {
     line-height: 1.6;
 }
 
-.archive-collection__details {
+.archive-collection__action {
     margin-top: 12px;
     border-top: 1px solid rgba(194, 198, 211, 0.8);
 }
 
-.archive-collection__details summary {
+.archive-collection__more {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
     padding: 7px 0;
     color: var(--gfgf-primary);
+    background: transparent;
+    border: 0;
     font-size: 15px;
     font-weight: 700;
+    font-family: inherit;
     line-height: 1.4;
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
-    list-style: none;
     cursor: pointer;
 }
 
-.archive-collection__details summary::-webkit-details-marker {
-    display: none;
-}
-
-.archive-collection__details summary:hover {
+.archive-collection__more:hover {
     color: var(--gfgf-primary-container);
 }
 
-.archive-collection__details summary:focus-visible {
+.archive-collection__more:focus-visible {
     outline: 3px solid var(--gfgf-focus);
     outline-offset: 3px;
     border-radius: 2px;
 }
 
-.archive-collection__toggle--close,
-.archive-collection__details[open] .archive-collection__toggle--open {
-    display: none;
-}
-
-.archive-collection__details[open] .archive-collection__toggle--close {
-    display: inline;
-}
-
-.archive-collection__details-content {
-    overflow: hidden;
-}
-
-.archive-collection__details-content > p {
-    margin: 0;
-    padding-bottom: 12px;
+.archive-collection-dialog {
+    width: min(680px, calc(100% - 40px));
+    max-width: none;
+    max-height: calc(100dvh - 40px);
+    padding: 0;
     color: var(--gfgf-text);
+    background: transparent;
+    border: 0;
+    border-radius: 10px;
+    overflow: visible;
+}
+
+.archive-collection-dialog::backdrop {
+    background: rgba(12, 27, 45, 0.58);
+}
+
+.archive-collection-dialog__surface {
+    position: relative;
+    max-height: calc(100dvh - 40px);
+    padding: clamp(32px, 5vw, 48px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--gfgf-surface);
+    border: 1px solid var(--gfgf-border);
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(12, 27, 45, 0.28);
+}
+
+.archive-collection-dialog__surface h2 {
+    margin: 0;
+    padding-right: 52px;
+    color: var(--gfgf-primary);
+    font-size: clamp(1.55rem, 4vw, 2rem);
+    line-height: 1.25;
+}
+
+.archive-collection-dialog__surface > p {
+    margin: 20px 0 0;
+    color: var(--gfgf-text);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.archive-collection-dialog__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--gfgf-primary);
+    background: var(--gfgf-surface-high);
+    border: 1px solid var(--gfgf-border);
+    border-radius: 50%;
+    font: inherit;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.archive-collection-dialog__close:hover {
+    color: var(--gfgf-on-primary);
+    background: var(--gfgf-primary);
+}
+
+.archive-collection-dialog__download {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 24px;
+    color: var(--gfgf-primary);
+    font-weight: 700;
+}
+
+.archive-collection-dialog__download[hidden] {
+    display: none;
 }
 
 .archive-visit {
@@ -1355,6 +1415,25 @@ input:focus {
     .archive-collection,
     .archive-download-group {
         padding: 24px;
+    }
+
+    .archive-collection-dialog {
+        width: calc(100% - 24px);
+        max-height: calc(100dvh - 24px);
+    }
+
+    .archive-collection-dialog__surface {
+        max-height: calc(100dvh - 24px);
+        padding: 32px 24px;
+    }
+
+    .archive-collection-dialog__surface h2 {
+        padding-right: 44px;
+    }
+
+    .archive-collection-dialog__close {
+        top: 8px;
+        right: 8px;
     }
 
     .archive-visit {
