@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "gfgf-service-docs/search",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "title": "GFGF Dokumentensuche",
   "category": "widgets",
   "icon": "search",

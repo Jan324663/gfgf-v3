@@ -12,7 +12,7 @@ defined('ABSPATH') || exit;
 final class Frontend
 {
     private const NONCE_ACTION = 'gfgf_service_doc_request';
-    private const PER_PAGE = 25;
+    private const PER_PAGE = 20;
 
     /** @return array<string, string> */
     public static function default_attributes(): array
@@ -101,10 +101,18 @@ final class Frontend
                     <h2 id="service-docs-results-heading"><?php esc_html_e('Suchergebnisse', 'gfgf-service-docs'); ?></h2>
                     <p aria-live="polite">
                         <?php
-                        printf(
-                            esc_html(_n('%s Treffer', '%s Treffer', $results['total'], 'gfgf-service-docs')),
-                            esc_html(number_format_i18n($results['total']))
+                        $result_summary = sprintf(
+                            _n('%s Treffer', '%s Treffer', $results['total'], 'gfgf-service-docs'),
+                            number_format_i18n($results['total'])
                         );
+                        if ($results['pages'] > 1) {
+                            $result_summary .= ' – ' . sprintf(
+                                __('Seite %1$s von %2$s', 'gfgf-service-docs'),
+                                number_format_i18n($results['page']),
+                                number_format_i18n($results['pages'])
+                            );
+                        }
+                        echo esc_html($result_summary);
                         ?>
                     </p>
                 </div>
@@ -116,7 +124,7 @@ final class Frontend
                 <?php else : ?>
                     <div class="service-docs-results__list">
                         <?php foreach ($results['items'] as $document) : ?>
-                            <?php self::render_result_card($document, $query, $attributes); ?>
+                            <?php self::render_result_card($document, $query, $results['page'], $attributes); ?>
                         <?php endforeach; ?>
                     </div>
                     <?php self::render_pagination($results, $query); ?>
@@ -128,7 +136,12 @@ final class Frontend
     /** @param array<string, string> $document
      *  @param array<string, mixed> $attributes
      */
-    private static function render_result_card(array $document, string $query, array $attributes): void
+    private static function render_result_card(
+        array $document,
+        string $query,
+        int $results_page,
+        array $attributes
+    ): void
     {
         $primary_fields = [
             'firma'       => __('Firma / Hersteller', 'gfgf-service-docs'),
@@ -156,6 +169,7 @@ final class Frontend
             array_filter([
                 'doc_idx' => $document['idx_value'],
                 'docs_q'  => $query,
+                'docs_page' => $results_page > 1 ? $results_page : null,
             ]),
             self::page_url()
         );
@@ -220,8 +234,10 @@ final class Frontend
             'current'   => $results['page'],
             'total'     => $results['pages'],
             'type'      => 'list',
-            'prev_text' => __('Zurück', 'gfgf-service-docs'),
-            'next_text' => __('Weiter', 'gfgf-service-docs'),
+            'end_size'  => 1,
+            'mid_size'  => 1,
+            'prev_text' => __('← Zurück', 'gfgf-service-docs'),
+            'next_text' => __('Weiter →', 'gfgf-service-docs'),
         ]);
 
         if (is_string($links)) {
@@ -235,7 +251,14 @@ final class Frontend
     private static function render_request_view(string $idx, string $query, array $attributes): void
     {
         $document = Repository::find_by_idx($idx);
-        $back_url = add_query_arg(array_filter(['docs_q' => $query]), self::page_url());
+        $results_page = isset($_GET['docs_page']) ? max(1, absint($_GET['docs_page'])) : 1;
+        $back_url = add_query_arg(
+            array_filter([
+                'docs_q'    => $query,
+                'docs_page' => $results_page > 1 ? $results_page : null,
+            ]),
+            self::page_url()
+        );
 
         if (null === $document) {
             ?>
@@ -279,7 +302,7 @@ final class Frontend
 
             <?php self::render_request_status($status, $attributes); ?>
             <?php if ('sent' !== $status) : ?>
-                <?php self::render_request_form($document, $query, $attributes); ?>
+                <?php self::render_request_form($document, $query, $results_page, $attributes); ?>
             <?php endif; ?>
         </section>
         <?php
@@ -317,12 +340,18 @@ final class Frontend
     /** @param array<string, string> $document
      *  @param array<string, mixed> $attributes
      */
-    private static function render_request_form(array $document, string $query, array $attributes): void
+    private static function render_request_form(
+        array $document,
+        string $query,
+        int $results_page,
+        array $attributes
+    ): void
     {
         $return_url = add_query_arg(
             array_filter([
                 'doc_idx' => $document['idx_value'],
                 'docs_q'  => $query,
+                'docs_page' => $results_page > 1 ? $results_page : null,
             ]),
             self::page_url()
         ) . '#anfrage';
@@ -455,12 +484,23 @@ final class Frontend
             $message,
             $document
         );
+        $sender_email = self::sender_email();
         $headers = [
             'Content-Type: text/plain; charset=UTF-8',
+            'From: GFGF Schaltplanservice <' . $sender_email . '>',
             'Reply-To: ' . $email,
         ];
+        $set_envelope_sender = static function ($phpmailer) use ($sender_email): void {
+            $phpmailer->Sender = $sender_email;
+        };
+        add_action('phpmailer_init', $set_envelope_sender);
+        try {
+            $mail_sent = wp_mail($recipient, $subject, $body, $headers);
+        } finally {
+            remove_action('phpmailer_init', $set_envelope_sender);
+        }
 
-        if (!wp_mail($recipient, $subject, $body, $headers)) {
+        if (!$mail_sent) {
             self::redirect_with_status($return_url, 'mail-error');
         }
 
@@ -561,6 +601,14 @@ final class Frontend
         }
 
         return home_url('/datenschutz/');
+    }
+
+    private static function sender_email(): string
+    {
+        $default = sanitize_email((string) get_option('admin_email'));
+        $filtered = sanitize_email((string) apply_filters('gfgf_service_docs_sender_email', $default));
+
+        return '' !== $filtered ? $filtered : $default;
     }
 
     private static function render_simple_permalink_field(): void

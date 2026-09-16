@@ -246,13 +246,17 @@
     margin-top: 30px;
 }
 
-.service-docs-pagination .page-numbers {
+.service-docs-pagination ul.page-numbers {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin: 0;
     padding: 0;
     list-style: none;
+}
+
+.service-docs-pagination li {
+    display: flex;
 }
 
 .service-docs-pagination a,
@@ -268,6 +272,13 @@
     border-radius: 7px;
     font-weight: 700;
     text-decoration: none;
+}
+
+.service-docs-pagination .dots {
+    min-width: 30px;
+    padding: 0 4px;
+    background: transparent;
+    border-color: transparent;
 }
 
 .service-docs-pagination .current {
@@ -472,6 +483,18 @@
         align-items: flex-start;
         flex-direction: column;
         gap: 6px;
+    }
+
+    .service-docs-pagination ul.page-numbers {
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .service-docs-pagination a,
+    .service-docs-pagination .current {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0 10px;
     }
 
     .service-doc-card__detail-list {

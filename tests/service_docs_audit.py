@@ -1,7 +1,7 @@
 """Frontend and responsive regression audit for the document search."""
 
 import os
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from playwright.sync_api import sync_playwright
 
@@ -20,6 +20,17 @@ VIEWPORTS = ((390, 844), (768, 1024), (1366, 768))
 
 def has_query_value(url: str, key: str, expected: str) -> bool:
     return parse_qs(urlparse(url).query).get(key) == [expected]
+
+
+def query_url(url: str, **parameters) -> str:
+    parsed = urlparse(url)
+    query = parse_qs(parsed.query)
+    for key, value in parameters.items():
+        if value is None:
+            query.pop(key, None)
+        else:
+            query[key] = [str(value)]
+    return urlunparse(parsed._replace(query=urlencode(query, doseq=True)))
 
 
 with sync_playwright() as playwright:
@@ -100,18 +111,113 @@ with sync_playwright() as playwright:
         page.close()
 
     page = browser.new_page(ignore_https_errors=IGNORE_HTTPS_ERRORS)
-    page.goto(SEARCH_URL, wait_until="networkidle")
-    page.locator("#service-docs-query").fill("Grundig")
-    page.locator(".service-docs-search__form button").click()
+    count_cases = (
+        ("zzzz-no-result-987654", 0, 0),
+        ("grundig accoro", 1, 1),
+        ("telemonde", 7, 7),
+        ("romanze", 20, 20),
+        ("potsdam", 21, 20),
+    )
+    for term, total, visible in count_cases:
+        page.goto(query_url(SEARCH_URL, docs_q=term), wait_until="networkidle")
+        assert page.locator(".service-doc-card").count() == visible
+        summary = page.locator(".service-docs-results__heading p").inner_text()
+        assert summary.startswith(f"{total} Treffer"), (term, summary)
+        if total <= 20:
+            assert "Seite" not in summary
+            assert page.locator(".service-docs-pagination").count() == 0
+        else:
+            assert "Seite 1 von 2" in summary
+            assert page.locator(".service-docs-pagination a.prev").count() == 0
+            assert page.locator(".service-docs-pagination a.next").count() == 1
+    print("OK result-count boundaries 0/1/<20/20/21")
+
+    page.goto(query_url(SEARCH_URL, docs_q="siemens"), wait_until="networkidle")
+    assert page.locator(".service-doc-card").count() == 20
+    summary = page.locator(".service-docs-results__heading p").inner_text()
+    assert "2061 Treffer" in summary.replace(".", "")
+    assert "Seite 1 von 104" in summary
+    assert page.locator(".service-docs-pagination a.prev").count() == 0
+    assert page.locator(".service-docs-pagination a.next").count() == 1
+    assert page.locator(".service-docs-pagination a", has_text="104").count() == 1
+    page.locator(".service-docs-pagination a.next").click()
     page.wait_for_load_state("networkidle")
-    assert page.locator(".service-doc-card").count() == 25
-    next_link = page.locator(".service-docs-pagination a.next")
-    assert next_link.count() == 1
-    next_link.click()
-    page.wait_for_load_state("networkidle")
+    assert has_query_value(page.url, "docs_q", "siemens")
     assert has_query_value(page.url, "docs_page", "2")
-    assert page.locator(".service-doc-card").count() == 25
-    print("OK pagination")
+    assert page.locator(".service-doc-card").count() == 20
+
+    page.goto(
+        query_url(SEARCH_URL, docs_q="siemens", docs_page=52),
+        wait_until="networkidle",
+    )
+    assert "Seite 52 von 104" in page.locator(
+        ".service-docs-results__heading p"
+    ).inner_text()
+    assert page.locator(".service-docs-pagination a.prev").count() == 1
+    assert page.locator(".service-docs-pagination a.next").count() == 1
+    assert page.locator(".service-docs-pagination li").count() <= 9
+
+    page.goto(
+        query_url(SEARCH_URL, docs_q="siemens", docs_page=104),
+        wait_until="networkidle",
+    )
+    assert page.locator(".service-doc-card").count() == 1
+    assert "Seite 104 von 104" in page.locator(
+        ".service-docs-results__heading p"
+    ).inner_text()
+    assert page.locator(".service-docs-pagination a.prev").count() == 1
+    assert page.locator(".service-docs-pagination a.next").count() == 0
+    print("OK pagination first/middle/last with 2,061 results")
+
+    page.goto(
+        query_url(SEARCH_URL, docs_q="siemens", docs_page=8),
+        wait_until="networkidle",
+    )
+    request_link = page.locator(".service-doc-card__request").first
+    assert has_query_value(request_link.get_attribute("href"), "docs_page", "8")
+    request_link.click()
+    page.wait_for_load_state("networkidle")
+    assert has_query_value(page.url, "docs_page", "8")
+    back_link = page.locator(".service-docs-back")
+    assert has_query_value(back_link.get_attribute("href"), "docs_page", "8")
+    assert has_query_value(
+        page.locator("input[name=return_url]").get_attribute("value"),
+        "docs_page",
+        "8",
+    )
+    back_link.click()
+    page.wait_for_load_state("networkidle")
+    assert has_query_value(page.url, "docs_q", "siemens")
+    assert has_query_value(page.url, "docs_page", "8")
+    assert "Seite 8 von 104" in page.locator(
+        ".service-docs-results__heading p"
+    ).inner_text()
+
+    page.locator(".service-doc-card__request").first.click()
+    page.wait_for_load_state("networkidle")
+    page.go_back(wait_until="networkidle")
+    assert has_query_value(page.url, "docs_page", "8")
+    assert "Seite 8 von 104" in page.locator(
+        ".service-docs-results__heading p"
+    ).inner_text()
+    print("OK request return and browser back preserve page 8")
+
+    page.set_viewport_size({"width": 390, "height": 844})
+    page.goto(
+        query_url(SEARCH_URL, docs_q="siemens", docs_page=52),
+        wait_until="networkidle",
+    )
+    assert not page.evaluate(
+        "document.documentElement.scrollWidth > document.documentElement.clientWidth"
+    )
+    pagination_targets = page.locator(
+        ".service-docs-pagination a, .service-docs-pagination .current"
+    ).evaluate_all(
+        "elements => elements.map(element => element.getBoundingClientRect().height)"
+    )
+    assert pagination_targets and min(pagination_targets) >= 44
+    assert page.locator(".service-docs-pagination li").count() <= 9
+    print("OK mobile pagination")
     page.close()
 
     page = browser.new_page(ignore_https_errors=IGNORE_HTTPS_ERRORS)

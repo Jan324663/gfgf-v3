@@ -24,7 +24,9 @@ vorhandene Werte direkt aus dem urspruenglichen XML-Export.
 - Bis zu vier durch Leerzeichen getrennte Begriffe werden als
   gross-/kleinschreibungsunabhaengige Teiltreffer gesucht. Jeder Begriff muss
   im Datensatz vorkommen.
-- Treffer werden als responsive Karten mit optionalen Details ausgegeben.
+- Treffer werden serverseitig auf 20 Datensaetze pro Seite begrenzt und als
+  responsive Karten mit optionalen Details ausgegeben. Die Pagination behaelt
+  Suchbegriff und Ergebnisseite in der URL bei.
 - Eine Anfrage bezieht sich immer auf genau eine Unterlage.
 - Beim Absenden wird ausschliesslich die `idx` aus dem Formular verwendet und
   der vollstaendige Datensatz serverseitig neu aus der Tabelle geladen.
@@ -32,6 +34,8 @@ vorhandene Werte direkt aus dem urspruenglichen XML-Export.
   das Formular.
 - Die Empfaengeradresse ist unter `Einstellungen > GFGF Schaltplanservice`
   pflegbar. Es werden keine Empfaengeradressen im Frontend ausgegeben.
+- Als Absender und Envelope-Sender dient die validierte WordPress-
+  Administratoradresse; die anfragende Person wird als `Reply-To` gesetzt.
 
 Die redaktionellen Texte des Blocks sind in dessen Gutenberg-Einstellungen
 bearbeitbar. Seitentitel, Einleitung und Suchhinweise bestehen aus normalen

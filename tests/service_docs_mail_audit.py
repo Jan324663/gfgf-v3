@@ -11,7 +11,7 @@ from playwright.sync_api import sync_playwright
 
 SEARCH_URL = os.environ.get(
     "GFGF_SERVICE_DOCS_URL",
-    "http://localhost/gfgf-v3/?page_id=8&docs_q=telemonde&doc_idx=54315",
+    "http://localhost/gfgf-v3/?page_id=8&docs_q=telemonde&docs_page=8&doc_idx=54315",
 )
 WP_PATH = Path(os.environ.get("GFGF_LOCAL_WP_PATH", r"C:\laragon\www\gfgf-v3"))
 WP_CLI = Path(os.environ.get("GFGF_WP_CLI", r"C:\laragon\bin\wp-cli\wp.bat"))
@@ -52,12 +52,14 @@ with sync_playwright() as playwright:
     form.locator("button[type=submit]").click()
     page.wait_for_load_state("networkidle")
     assert "request_status=sent" in page.url
+    assert "docs_page=8" in page.url
     assert page.locator(".service-docs-notice--success").count() == 1
     browser.close()
 
 mail = wp_option_get("gfgf_test_last_service_docs_mail")
 body = mail["message"]
 subject = mail["subject"]
+headers = "\n".join(mail["headers"])
 assert "idx 54315" in subject
 assert "Firma / Hersteller: Telemonde" in body
 assert "Gerätename: Tuner" in body
@@ -75,4 +77,6 @@ assert "GFGF-Mitglied: Ja" in body
 assert unique_email in body
 assert "MANIPULIERTER HERSTELLER" not in body
 assert "serverseitig anhand der idx" in body
+assert "From: GFGF Schaltplanservice <" in headers
+assert f"Reply-To: {unique_email}" in headers
 print("OK server-side mail document lookup")
