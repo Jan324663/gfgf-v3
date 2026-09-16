@@ -68,21 +68,21 @@ function gfgf_v3_page_url(string $slug): string
 function gfgf_v3_primary_nav_items(): array
 {
     return [
-        ['label' => __('Über uns', 'gfgf-v3'), 'url' => home_url('/ueber-uns/')],
+        ['label' => __('Über uns', 'gfgf-v3'), 'url' => gfgf_v3_page_url('ueber-uns')],
         ['label' => __('Archiv', 'gfgf-v3'), 'url' => gfgf_v3_page_url('das-gfgf-archiv')],
-        ['label' => __('Funkgeschichte', 'gfgf-v3'), 'url' => home_url('/funkgeschichte/')],
-        ['label' => __('Schaltplanservice', 'gfgf-v3'), 'url' => home_url('/schaltplanservice/')],
-        ['label' => __('Mitgliedschaft', 'gfgf-v3'), 'url' => home_url('/mitgliedschaft/')],
+        ['label' => __('Funkgeschichte', 'gfgf-v3'), 'url' => gfgf_v3_page_url('funkgeschichte')],
+        ['label' => __('Schaltplanservice', 'gfgf-v3'), 'url' => gfgf_v3_page_url('schaltplanservice')],
+        ['label' => __('Mitgliedschaft', 'gfgf-v3'), 'url' => gfgf_v3_page_url('mitgliedschaft')],
     ];
 }
 
 function gfgf_v3_footer_nav_items(): array
 {
     return [
-        ['label' => __('Impressum', 'gfgf-v3'), 'url' => home_url('/impressum/')],
-        ['label' => __('Datenschutz', 'gfgf-v3'), 'url' => home_url('/datenschutz/')],
-        ['label' => __('Kontakt', 'gfgf-v3'), 'url' => home_url('/kontakt/')],
-        ['label' => __('Satzung', 'gfgf-v3'), 'url' => home_url('/satzung/')],
-        ['label' => __('Spenden', 'gfgf-v3'), 'url' => home_url('/spenden/')],
+        ['label' => __('Impressum', 'gfgf-v3'), 'url' => gfgf_v3_page_url('impressum')],
+        ['label' => __('Datenschutz', 'gfgf-v3'), 'url' => gfgf_v3_page_url('datenschutz')],
+        ['label' => __('Kontakt', 'gfgf-v3'), 'url' => gfgf_v3_page_url('kontakt')],
+        ['label' => __('Satzung', 'gfgf-v3'), 'url' => gfgf_v3_page_url('satzung')],
+        ['label' => __('Spenden', 'gfgf-v3'), 'url' => gfgf_v3_page_url('spenden')],
     ];
 }

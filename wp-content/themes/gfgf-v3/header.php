@@ -62,7 +62,7 @@ defined('ABSPATH') || exit;
                 <input id="site-search-field" class="site-search__field" type="search" name="s" placeholder="<?php esc_attr_e('Suche', 'gfgf-v3'); ?>" value="<?php echo esc_attr(get_search_query()); ?>">
                 <button class="site-search__button" type="submit"><?php esc_html_e('Suchen', 'gfgf-v3'); ?></button>
             </form>
-            <a class="button button--primary site-header__join" href="<?php echo esc_url(home_url('/mitgliedschaft/')); ?>">
+            <a class="button button--primary site-header__join" href="<?php echo esc_url(gfgf_v3_page_url('mitgliedschaft')); ?>">
                 <?php esc_html_e('Mitglied werden', 'gfgf-v3'); ?>
             </a>
             <button

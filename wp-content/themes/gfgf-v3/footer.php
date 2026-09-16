@@ -31,10 +31,10 @@
             ?>
         </nav>
         <div class="site-footer__actions">
-            <a class="icon-button icon-button--footer" href="<?php echo esc_url(home_url('/kontakt/')); ?>" aria-label="<?php esc_attr_e('Kontakt', 'gfgf-v3'); ?>">
+            <a class="icon-button icon-button--footer" href="<?php echo esc_url(gfgf_v3_page_url('kontakt')); ?>" aria-label="<?php esc_attr_e('Kontakt', 'gfgf-v3'); ?>">
                 <span aria-hidden="true">@</span>
             </a>
-            <a class="icon-button icon-button--footer" href="<?php echo esc_url(home_url('/spenden/')); ?>" aria-label="<?php esc_attr_e('Teilen', 'gfgf-v3'); ?>">
+            <a class="icon-button icon-button--footer" href="<?php echo esc_url(gfgf_v3_page_url('spenden')); ?>" aria-label="<?php esc_attr_e('Spenden', 'gfgf-v3'); ?>">
                 <span aria-hidden="true">↗</span>
             </a>
         </div>
