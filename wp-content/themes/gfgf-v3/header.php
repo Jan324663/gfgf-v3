@@ -16,9 +16,21 @@ defined('ABSPATH') || exit;
 <a class="skip-link" href="#content"><?php esc_html_e('Zum Inhalt springen', 'gfgf-v3'); ?></a>
 <header class="site-header">
     <div class="site-header__inner">
-        <a class="site-brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('GFGF Startseite', 'gfgf-v3'); ?>">
-            <span class="site-brand__name">GFGF e.V.</span>
-        </a>
+        <div class="site-brand">
+            <?php if (has_custom_logo()) : ?>
+                <?php echo get_custom_logo(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            <?php else : ?>
+                <a class="site-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('GFGF Startseite', 'gfgf-v3'); ?>">
+                    <img
+                        class="site-logo__image"
+                        src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/gfgf-logo.png'); ?>"
+                        width="123"
+                        height="122"
+                        alt="<?php esc_attr_e('GFGF e.V.', 'gfgf-v3'); ?>"
+                    >
+                </a>
+            <?php endif; ?>
+        </div>
         <nav id="primary-navigation" class="site-navigation" aria-label="<?php esc_attr_e('Hauptnavigation', 'gfgf-v3'); ?>">
             <?php
             $primary_menu = wp_nav_menu([

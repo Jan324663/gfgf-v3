@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.4.0
+Version: 0.5.0
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -132,15 +132,26 @@ input:focus {
     display: inline-flex;
     align-items: center;
     color: var(--gfgf-primary);
-    text-decoration: none;
     white-space: nowrap;
     min-height: 48px;
 }
 
-.site-brand__name {
-    font-size: 28px;
-    line-height: 36px;
-    font-weight: 800;
+.site-logo,
+.custom-logo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 48px;
+    text-decoration: none;
+}
+
+.site-logo__image,
+.custom-logo {
+    display: block;
+    width: auto;
+    max-width: none;
+    height: 52px;
 }
 
 .site-navigation {
@@ -933,6 +944,11 @@ input:focus {
         justify-self: start;
     }
 
+    .site-logo__image,
+    .custom-logo {
+        height: 48px;
+    }
+
     .site-header__actions {
         display: contents;
     }
@@ -1039,15 +1055,15 @@ input:focus {
         display: none;
     }
 
-    .site-brand__name {
-        font-size: 24px;
-        line-height: 32px;
-    }
-
     .site-brand {
         grid-column: 1;
         grid-row: 1;
         justify-self: start;
+    }
+
+    .site-logo__image,
+    .custom-logo {
+        height: 42px;
     }
 
     .site-header__actions {
