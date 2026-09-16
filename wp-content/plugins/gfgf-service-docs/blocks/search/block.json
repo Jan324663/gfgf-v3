@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "gfgf-service-docs/search",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "title": "GFGF Dokumentensuche",
   "category": "widgets",
   "icon": "search",
@@ -15,7 +15,7 @@
     "detailsLabel": { "type": "string", "default": "Details anzeigen" },
     "requestButtonLabel": { "type": "string", "default": "Unterlage anfragen" },
     "requestHeading": { "type": "string", "default": "Unterlage anfragen" },
-    "requestIntro": { "type": "string", "default": "Bitte geben Sie Ihre Kontaktdaten ein. Die ausgewählte Unterlage wird der Anfrage automatisch und unveränderbar zugeordnet." },
+    "requestIntro": { "type": "string", "default": "Bitte geben Sie Ihre Kontaktdaten ein." },
     "firstNameLabel": { "type": "string", "default": "Vorname" },
     "lastNameLabel": { "type": "string", "default": "Nachname" },
     "emailLabel": { "type": "string", "default": "E-Mail-Adresse" },

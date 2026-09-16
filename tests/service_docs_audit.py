@@ -38,6 +38,13 @@ with sync_playwright() as playwright:
         assert page.locator("main h1").inner_text() == "Dokumente suchen"
         assert page.locator("#service-docs-query").count() == 1
         assert page.locator("main table").count() == 0
+        hero_left = page.locator(".service-docs-page__hero-copy").evaluate(
+            "element => element.getBoundingClientRect().left"
+        )
+        content_left = page.locator(".service-docs-search").evaluate(
+            "element => element.getBoundingClientRect().left"
+        )
+        assert abs(hero_left - content_left) < 1
         assert not page.evaluate(
             "document.documentElement.scrollWidth > document.documentElement.clientWidth"
         )
@@ -71,6 +78,10 @@ with sync_playwright() as playwright:
         assert has_query_value(page.url, "doc_idx", "23101")
         assert page.locator(".service-docs-request__document").count() == 1
         assert "Grundig" in page.locator(".service-docs-request__document").inner_text()
+        assert page.locator(".service-docs-request > p").inner_text() == (
+            "Bitte geben Sie Ihre Kontaktdaten ein."
+        )
+        assert not page.locator(".service-docs-page__help").is_visible()
         form = page.locator(".service-docs-request__form")
         assert form.count() == 1
         assert form.locator("input[name=document_idx]").get_attribute("value") == "23101"

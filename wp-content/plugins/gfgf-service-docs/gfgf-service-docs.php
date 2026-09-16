@@ -2,7 +2,7 @@
 /**
  * Plugin Name: GFGF Service Docs
  * Description: Infrastruktur fuer das Modul Schaltplaene / Unterlagen.
- * Version: 0.2.1
+ * Version: 0.2.2
  * Author: GFGF
  * Text Domain: gfgf-service-docs
  * Requires PHP: 8.1
@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 defined('ABSPATH') || exit;
 
-define('GFGF_SERVICE_DOCS_VERSION', '0.2.1');
+define('GFGF_SERVICE_DOCS_VERSION', '0.2.2');
 define('GFGF_SERVICE_DOCS_FILE', __FILE__);
 define('GFGF_SERVICE_DOCS_PATH', plugin_dir_path(__FILE__));
 

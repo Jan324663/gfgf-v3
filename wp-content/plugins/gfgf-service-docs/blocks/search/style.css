@@ -25,6 +25,10 @@
 }
 
 .service-docs-page__hero-copy {
+    max-width: none;
+}
+
+.service-docs-page__hero-copy > * {
     max-width: 820px;
 }
 
@@ -407,6 +411,10 @@
     margin: 10px 0 0;
     color: var(--gfgf-text-muted);
     font-size: 16px;
+}
+
+.service-docs-page--request-open .service-docs-page__help {
+    display: none;
 }
 
 @media (max-width: 980px) {

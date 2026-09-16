@@ -25,7 +25,7 @@ final class Frontend
             'detailsLabel'       => __('Details anzeigen', 'gfgf-service-docs'),
             'requestButtonLabel' => __('Unterlage anfragen', 'gfgf-service-docs'),
             'requestHeading'     => __('Unterlage anfragen', 'gfgf-service-docs'),
-            'requestIntro'       => __('Bitte geben Sie Ihre Kontaktdaten ein. Die ausgewählte Unterlage wird der Anfrage automatisch und unveränderbar zugeordnet.', 'gfgf-service-docs'),
+            'requestIntro'       => __('Bitte geben Sie Ihre Kontaktdaten ein.', 'gfgf-service-docs'),
             'firstNameLabel'     => __('Vorname', 'gfgf-service-docs'),
             'lastNameLabel'      => __('Nachname', 'gfgf-service-docs'),
             'emailLabel'         => __('E-Mail-Adresse', 'gfgf-service-docs'),
