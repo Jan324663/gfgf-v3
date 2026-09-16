@@ -64,6 +64,24 @@ def document_boxes(page):
     )
 
 
+def assert_images_loaded(page, selector, expected_count):
+    images = page.locator(selector)
+    assert images.count() == expected_count
+
+    for index in range(images.count()):
+        image = images.nth(index)
+        image.scroll_into_view_if_needed()
+        image.evaluate(
+            """element => element.complete && element.naturalWidth
+                ? true
+                : new Promise(resolve => {
+                    element.addEventListener('load', () => resolve(true), {once: true});
+                    element.addEventListener('error', () => resolve(false), {once: true});
+                })"""
+        )
+        assert image.evaluate("element => element.complete && element.naturalWidth > 0")
+
+
 def assert_internal_links(page, page_url):
     origin = urlparse(page_url).netloc
     hrefs = page.locator("a[href]").evaluate_all(
@@ -96,17 +114,33 @@ with sync_playwright() as playwright:
         page.goto(LANDING_URL, wait_until="domcontentloaded")
         assert page.locator(".archive-teaser").count() == 3
         assert page.locator(".archive-offer").count() == 1
-        expected_landing_gap = 28 if width <= 720 else 40
+        assert page.locator(".archive-landing__hero-media").count() == 1
+        assert page.locator(".archive-teaser__media").count() == 3
+        expected_landing_gap = (
+            computed_px(page, ".archive-landing__intro", "padding-bottom")
+            + computed_px(page, ".archive-landing__intro", "border-bottom-width")
+            + computed_px(page, ".archive-landing__body", "padding-top")
+        )
         assert vertical_gap(
             page, ".archive-landing__intro-inner", ".archive-teasers"
         ) == expected_landing_gap
+        expected_offer_gap = 28 if width <= 720 else 40
         assert (
             vertical_gap(page, ".archive-teasers", ".archive-offer")
-            == expected_landing_gap
+            == expected_offer_gap
         )
         assert horizontal_offset(
             page, ".archive-landing__intro-inner", ".archive-teasers"
         ) == 0
+        assert "Technikgeschichte zu bewahren" in page.locator(
+            ".archive-offer p"
+        ).inner_text()
+        assert_images_loaded(page, ".archive-landing__content img", 4)
+        if width > 1000:
+            card_heights = page.locator(".archive-teaser").evaluate_all(
+                "elements => elements.map(element => element.getBoundingClientRect().height)"
+            )
+            assert max(card_heights) - min(card_heights) < 0.2
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
         if width > 1000:
             assert_internal_links(page, LANDING_URL)
@@ -140,20 +174,7 @@ with sync_playwright() as playwright:
         assert computed_px(page, ".archive-timeline__date", "margin-top") == 0
         assert computed_px(page, ".archive-timeline__date", "margin-bottom") == 5
 
-        images = page.locator(".archive-detail__content img")
-        assert images.count() == 5
-        for index in range(images.count()):
-            image = images.nth(index)
-            image.scroll_into_view_if_needed()
-            image.evaluate(
-                """element => element.complete && element.naturalWidth
-                    ? true
-                    : new Promise(resolve => {
-                        element.addEventListener('load', () => resolve(true), {once: true});
-                        element.addEventListener('error', () => resolve(false), {once: true});
-                    })"""
-            )
-            assert image.evaluate("element => element.complete && element.naturalWidth > 0")
+        assert_images_loaded(page, ".archive-detail__content img", 5)
 
         trigger = page.locator(".archive-collection__more .wp-block-button__link").first
         trigger.scroll_into_view_if_needed()

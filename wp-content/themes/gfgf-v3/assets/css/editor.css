@@ -10,12 +10,41 @@
     margin-left: auto;
 }
 
+.editor-styles-wrapper .archive-landing__hero-grid,
+.editor-styles-wrapper .archive-teasers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.editor-styles-wrapper .archive-teasers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .editor-styles-wrapper .archive-collection,
 .editor-styles-wrapper .archive-teaser,
 .editor-styles-wrapper .archive-download-group {
     padding: 20px;
     border: 1px solid #c2c6d3;
     border-radius: 8px;
+}
+
+.editor-styles-wrapper .archive-teaser {
+    padding: 0;
+    overflow: hidden;
+}
+
+.editor-styles-wrapper .archive-landing__hero-media img,
+.editor-styles-wrapper .archive-teaser__media img {
+    display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.editor-styles-wrapper .archive-teaser__content,
+.editor-styles-wrapper .archive-teaser > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-buttons {
+    padding: 20px;
 }
 
 .editor-styles-wrapper .archive-collection__dialog-source {
@@ -40,4 +69,11 @@
 .editor-styles-wrapper .archive-timeline__item {
     padding: 12px;
     border-left: 3px solid #003f83;
+}
+
+@media (max-width: 900px) {
+    .editor-styles-wrapper .archive-landing__hero-grid,
+    .editor-styles-wrapper .archive-teasers {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }

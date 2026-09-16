@@ -111,3 +111,66 @@ function gfgf_v3_migrate_archive_pages_to_blocks(): void
     }
 }
 add_action('init', 'gfgf_v3_migrate_archive_pages_to_blocks', 30);
+
+/**
+ * Upgrade the untouched first Gutenberg version of the archive landing page.
+ *
+ * The strict content markers prevent an editor's later changes from being
+ * overwritten. The replacement itself remains ordinary, editable core blocks.
+ */
+function gfgf_v3_upgrade_archive_landing_design(): void
+{
+    $upgrade_version = '2026-09-16-archive-landing-visual-v1';
+
+    if ($upgrade_version === get_option('gfgf_v3_archive_landing_upgrade')) {
+        return;
+    }
+
+    $page = get_page_by_path('das-gfgf-archiv', OBJECT, 'page');
+
+    if (!$page instanceof WP_Post) {
+        return;
+    }
+
+    $content = (string) $page->post_content;
+
+    if (str_contains($content, 'archive-landing__hero-media')) {
+        update_option('gfgf_v3_archive_landing_upgrade', $upgrade_version, false);
+        return;
+    }
+
+    $expected_markers = [
+        'Im GFGF-Archiv in Hainichen bewahren wir umfangreiche historische Unterlagen',
+        'Sie besitzen alte Schaltpläne, Serviceunterlagen, Bedienungsanleitungen',
+        'archive-landing__intro-inner',
+    ];
+
+    foreach ($expected_markers as $marker) {
+        if (!str_contains($content, $marker)) {
+            return;
+        }
+    }
+
+    if (3 !== substr_count($content, '<article class="wp-block-group archive-teaser">')) {
+        return;
+    }
+
+    $upgraded_content = gfgf_v3_render_pattern_content('gfgf-archiv.php');
+
+    if ('' === $upgraded_content) {
+        return;
+    }
+
+    $result = wp_update_post(
+        wp_slash([
+            'ID'           => $page->ID,
+            'post_content' => $upgraded_content,
+        ]),
+        true
+    );
+
+    if (!is_wp_error($result)) {
+        update_option('gfgf_v3_archive_landing_upgrade', $upgrade_version, false);
+    }
+}
+add_action('init', 'gfgf_v3_upgrade_archive_landing_design', 31);

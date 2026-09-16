@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.11.2
+Version: 0.12.0
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -347,7 +347,7 @@ input:focus {
 }
 
 .archive-landing {
-    padding: 64px 0 72px;
+    padding: 0 0 72px;
 }
 
 :where(.archive-landing__content, .archive-detail__content) > *,
@@ -366,8 +366,25 @@ input:focus {
     margin: 0 auto;
 }
 
+.archive-landing__intro {
+    padding: 56px 0;
+    background: linear-gradient(125deg, var(--gfgf-surface-low) 0%, var(--gfgf-background) 72%);
+    border-bottom: 1px solid rgba(194, 198, 211, 0.75);
+}
+
 .archive-landing__intro-inner {
-    margin-bottom: 40px;
+    margin-bottom: 0;
+}
+
+.archive-landing__hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.04fr) minmax(360px, 0.96fr);
+    align-items: center;
+    gap: clamp(40px, 6vw, 76px);
+}
+
+.archive-landing__intro-copy {
+    max-width: 680px;
 }
 
 .archive-landing__intro h1 {
@@ -379,11 +396,32 @@ input:focus {
 }
 
 .archive-landing__intro p {
-    max-width: 920px;
+    max-width: 650px;
     margin: 0;
     color: var(--gfgf-text-muted);
     font-size: 19px;
     line-height: 1.65;
+}
+
+.archive-landing__hero-media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--gfgf-surface-high);
+    border: 1px solid var(--gfgf-border);
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(18, 28, 42, 0.13);
+}
+
+.archive-landing__hero-media img,
+.archive-teaser__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.archive-landing__body {
+    padding-top: 48px;
 }
 
 .archive-teasers {
@@ -398,7 +436,8 @@ input:focus {
     min-width: 0;
     min-height: 100%;
     flex-direction: column;
-    padding: 32px;
+    padding: 0;
+    overflow: hidden;
     background: var(--gfgf-surface);
     border: 1px solid var(--gfgf-border);
     border-radius: 8px;
@@ -414,6 +453,20 @@ input:focus {
 
 .archive-teaser__content {
     flex: 1 1 auto;
+    padding: 26px 28px 0;
+}
+
+.archive-teaser__media {
+    width: 100%;
+    height: 168px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    background: var(--gfgf-surface-high);
+    border-bottom: 1px solid var(--gfgf-border);
+}
+
+.archive-teaser:first-child .archive-teaser__media img {
+    object-position: 50% 61%;
 }
 
 .archive-teaser h2,
@@ -426,7 +479,7 @@ input:focus {
 }
 
 .archive-teaser p {
-    margin: 16px 0 28px;
+    margin: 14px 0 0;
     color: var(--gfgf-text-muted);
     font-size: 17px;
     line-height: 1.65;
@@ -438,6 +491,7 @@ input:focus {
 
 .archive-teaser > .wp-block-group__inner-container > .wp-block-buttons {
     margin-top: auto;
+    padding: 24px 28px 28px;
 }
 
 .archive-offer {
@@ -446,11 +500,12 @@ input:focus {
     justify-content: space-between;
     gap: 32px;
     margin-top: 40px;
-    padding: 24px 28px;
-    background: var(--gfgf-surface-low);
+    padding: 28px 30px;
+    background: linear-gradient(110deg, #edf4ff 0%, #fffaf3 100%);
     border: 1px solid var(--gfgf-border);
-    border-left: 4px solid var(--gfgf-primary);
-    border-radius: 6px;
+    border-left: 4px solid var(--gfgf-tertiary);
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(18, 28, 42, 0.05);
 }
 
 .archive-offer__content {
@@ -458,7 +513,7 @@ input:focus {
 }
 
 .archive-offer h2 {
-    font-size: 22px;
+    font-size: 23px;
 }
 
 .archive-offer p {
@@ -1227,7 +1282,25 @@ input:focus {
     }
 
     .archive-landing {
-        padding: 52px 0 64px;
+        padding: 0 0 64px;
+    }
+
+    .archive-landing__intro {
+        padding: 48px 0;
+    }
+
+    .archive-landing__hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+    }
+
+    .archive-landing__hero-media {
+        width: min(100%, 720px);
+        aspect-ratio: 16 / 9;
+    }
+
+    .archive-landing__body {
+        padding-top: 40px;
     }
 
     .archive-teasers {
@@ -1392,11 +1465,23 @@ input:focus {
     }
 
     .archive-landing {
-        padding: 40px 0 48px;
+        padding: 0 0 48px;
     }
 
-    .archive-landing__intro-inner {
-        margin-bottom: 28px;
+    .archive-landing__intro {
+        padding: 36px 0 40px;
+    }
+
+    .archive-landing__hero-grid {
+        gap: 28px;
+    }
+
+    .archive-landing__hero-media {
+        aspect-ratio: 16 / 10;
+    }
+
+    .archive-landing__body {
+        padding-top: 32px;
     }
 
     .archive-landing__intro p {
@@ -1412,7 +1497,19 @@ input:focus {
     }
 
     .archive-teaser {
-        padding: 26px 24px;
+        padding: 0;
+    }
+
+    .archive-teaser__media {
+        height: 160px;
+    }
+
+    .archive-teaser__content {
+        padding: 24px 22px 0;
+    }
+
+    .archive-teaser > .wp-block-group__inner-container > .wp-block-buttons {
+        padding: 20px 22px 24px;
     }
 
     .archive-teaser h2 {

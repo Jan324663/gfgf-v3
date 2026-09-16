@@ -14,23 +14,34 @@ $archive_url = gfgf_v3_page_url('archiv-besuchen');
 $documents_url = gfgf_v3_page_url('schaltplanservice');
 $sources_url = gfgf_v3_page_url('weitere-archive-quellen');
 $contact_url = gfgf_v3_page_url('kontakt');
+$archive_image_url = trailingslashit(get_template_directory_uri()) . 'assets/images/archive/';
 ?>
 <!-- wp:group {"tagName":"section","className":"archive-landing__intro"} -->
-<section class="wp-block-group archive-landing__intro"><!-- wp:group {"className":"archive-landing__container archive-landing__intro-inner"} -->
-<div class="wp-block-group archive-landing__container archive-landing__intro-inner"><!-- wp:heading {"level":1} -->
+<section class="wp-block-group archive-landing__intro"><!-- wp:group {"className":"archive-landing__container archive-landing__intro-inner archive-landing__hero-grid"} -->
+<div class="wp-block-group archive-landing__container archive-landing__intro-inner archive-landing__hero-grid"><!-- wp:group {"className":"archive-landing__intro-copy"} -->
+<div class="wp-block-group archive-landing__intro-copy"><!-- wp:heading {"level":1} -->
 <h1 class="wp-block-heading">Das GFGF-Archiv</h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Im GFGF-Archiv in Hainichen bewahren wir umfangreiche historische Unterlagen zur Rundfunk- und Unterhaltungselektronik – von Schaltplänen und Serviceunterlagen über Bedienungsanleitungen bis zu Prospekten, Katalogen und Fachliteratur.</p>
+<p>Im GFGF-Archiv in Hainichen bewahren wir historische Unterlagen zur Rundfunk- und Unterhaltungselektronik: Schaltpläne, Serviceunterlagen, Bedienungsanleitungen, Prospekte, Kataloge und Fachliteratur.</p>
 <!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"archive-landing__hero-media"} -->
+<figure class="wp-block-image size-full archive-landing__hero-media"><img src="<?php echo esc_url($archive_image_url . 'archive-library.jpg'); ?>" alt="Bücherregale in einem Raum des GFGF-Archivs in Hainichen" /></figure>
+<!-- /wp:image --></div>
 <!-- /wp:group --></section>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"archive-landing__container"} -->
-<div class="wp-block-group archive-landing__container"><!-- wp:group {"tagName":"section","className":"archive-teasers"} -->
+<!-- wp:group {"className":"archive-landing__container archive-landing__body"} -->
+<div class="wp-block-group archive-landing__container archive-landing__body"><!-- wp:group {"tagName":"section","className":"archive-teasers"} -->
 <section class="wp-block-group archive-teasers"><!-- wp:group {"tagName":"article","className":"archive-teaser"} -->
-<article class="wp-block-group archive-teaser"><!-- wp:group {"className":"archive-teaser__content"} -->
+<article class="wp-block-group archive-teaser"><!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"archive-teaser__media"} -->
+<figure class="wp-block-image size-full archive-teaser__media"><img src="<?php echo esc_url($archive_image_url . 'archive-building.jpg'); ?>" alt="Außenansicht des GFGF-Archivgebäudes in Hainichen" /></figure>
+<!-- /wp:image -->
+
+<!-- wp:group {"className":"archive-teaser__content"} -->
 <div class="wp-block-group archive-teaser__content"><!-- wp:heading -->
 <h2 class="wp-block-heading">Das GFGF-Archiv</h2>
 <!-- /wp:heading -->
@@ -48,7 +59,11 @@ $contact_url = gfgf_v3_page_url('kontakt');
 <!-- /wp:group -->
 
 <!-- wp:group {"tagName":"article","className":"archive-teaser"} -->
-<article class="wp-block-group archive-teaser"><!-- wp:group {"className":"archive-teaser__content"} -->
+<article class="wp-block-group archive-teaser"><!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"archive-teaser__media"} -->
+<figure class="wp-block-image size-full archive-teaser__media"><img src="<?php echo esc_url($archive_image_url . 'archive-service-files.jpg'); ?>" alt="Regale mit erschlossenen Serviceunterlagen im GFGF-Archiv" /></figure>
+<!-- /wp:image -->
+
+<!-- wp:group {"className":"archive-teaser__content"} -->
 <div class="wp-block-group archive-teaser__content"><!-- wp:heading -->
 <h2 class="wp-block-heading">Dokumente suchen</h2>
 <!-- /wp:heading -->
@@ -66,7 +81,11 @@ $contact_url = gfgf_v3_page_url('kontakt');
 <!-- /wp:group -->
 
 <!-- wp:group {"tagName":"article","className":"archive-teaser"} -->
-<article class="wp-block-group archive-teaser"><!-- wp:group {"className":"archive-teaser__content"} -->
+<article class="wp-block-group archive-teaser"><!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"archive-teaser__media"} -->
+<figure class="wp-block-image size-full archive-teaser__media"><img src="<?php echo esc_url($archive_image_url . 'archive-periodicals.jpg'); ?>" alt="Historische Zeitschriftenbestände im GFGF-Archiv" /></figure>
+<!-- /wp:image -->
+
+<!-- wp:group {"className":"archive-teaser__content"} -->
 <div class="wp-block-group archive-teaser__content"><!-- wp:heading -->
 <h2 class="wp-block-heading">Weitere Archive &amp; Quellen</h2>
 <!-- /wp:heading -->
@@ -91,7 +110,7 @@ $contact_url = gfgf_v3_page_url('kontakt');
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Sie besitzen alte Schaltpläne, Serviceunterlagen, Bedienungsanleitungen, Kataloge, Prospekte oder andere technische Dokumente und möchten diese erhalten wissen? Nehmen Sie gern Kontakt mit uns auf.</p>
+<p>Helfen Sie mit, Technikgeschichte zu bewahren. Wenn Sie historische Schaltpläne, Serviceunterlagen, Bedienungsanleitungen, Kataloge, Prospekte oder andere technische Dokumente besitzen, nehmen Sie gern Kontakt mit uns auf.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
