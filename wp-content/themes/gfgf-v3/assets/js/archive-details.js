@@ -1,15 +1,17 @@
 (() => {
     const dialog = document.querySelector('#archive-collection-dialog');
-    const triggers = document.querySelectorAll('.archive-collection__more');
+    const triggers = document.querySelectorAll(
+        '.archive-collection__more .wp-block-button__link, button.archive-collection__more'
+    );
 
     if (!dialog || !triggers.length || typeof dialog.showModal !== 'function') {
         return;
     }
 
-    const title = dialog.querySelector('#archive-dialog-title');
-    const text = dialog.querySelector('#archive-dialog-text');
-    const download = dialog.querySelector('.archive-collection-dialog__download');
-    const downloadLabel = dialog.querySelector('.archive-collection-dialog__download-label');
+    const dialogTitle = dialog.querySelector('#archive-dialog-title');
+    const dialogText = dialog.querySelector('#archive-dialog-text');
+    const dialogDownload = dialog.querySelector('.archive-collection-dialog__download');
+    const dialogDownloadLabel = dialog.querySelector('.archive-collection-dialog__download-label');
     const closeButton = dialog.querySelector('.archive-collection-dialog__close');
     let previousTrigger = null;
 
@@ -20,19 +22,33 @@
     };
 
     triggers.forEach((trigger) => {
-        trigger.addEventListener('click', () => {
-            previousTrigger = trigger;
-            title.textContent = trigger.dataset.dialogTitle || '';
-            text.textContent = trigger.dataset.dialogText || '';
+        trigger.setAttribute('aria-haspopup', 'dialog');
+        trigger.setAttribute('aria-controls', 'archive-collection-dialog');
 
-            if (trigger.dataset.dialogDownloadUrl && trigger.dataset.dialogDownloadLabel) {
-                download.href = trigger.dataset.dialogDownloadUrl;
-                downloadLabel.textContent = trigger.dataset.dialogDownloadLabel;
-                download.hidden = false;
+        trigger.addEventListener('click', (event) => {
+            const collection = trigger.closest('.archive-collection');
+            const source = collection?.querySelector('.archive-collection__dialog-source');
+            const title = collection?.querySelector('h3')?.textContent.trim() || trigger.dataset.dialogTitle || '';
+            const text = source?.querySelector('.archive-collection__dialog-text')?.textContent.trim()
+                || trigger.dataset.dialogText
+                || '';
+            const download = source?.querySelector('.archive-collection__dialog-download');
+            const downloadUrl = download?.href || trigger.dataset.dialogDownloadUrl || '';
+            const downloadLabel = download?.textContent.trim() || trigger.dataset.dialogDownloadLabel || '';
+
+            event.preventDefault();
+            previousTrigger = trigger;
+            dialogTitle.textContent = title;
+            dialogText.textContent = text;
+
+            if (downloadUrl && downloadLabel) {
+                dialogDownload.href = downloadUrl;
+                dialogDownloadLabel.textContent = downloadLabel;
+                dialogDownload.hidden = false;
             } else {
-                download.hidden = true;
-                download.removeAttribute('href');
-                downloadLabel.textContent = '';
+                dialogDownload.hidden = true;
+                dialogDownload.removeAttribute('href');
+                dialogDownloadLabel.textContent = '';
             }
 
             dialog.showModal();

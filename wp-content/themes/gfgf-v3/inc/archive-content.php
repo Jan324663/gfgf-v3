@@ -1,0 +1,113 @@
+<?php
+/**
+ * One-time migration of the existing empty archive pages to editable blocks.
+ */
+
+declare(strict_types=1);
+
+defined('ABSPATH') || exit;
+
+function gfgf_v3_render_pattern_content(string $filename): string
+{
+    $path = get_template_directory() . '/patterns/' . basename($filename);
+
+    if (!is_readable($path)) {
+        return '';
+    }
+
+    ob_start();
+    include $path;
+
+    return trim((string) ob_get_clean());
+}
+
+function gfgf_v3_migrate_archive_pages_to_blocks(): void
+{
+    $migration_version = '2026-09-16-archive-blocks-v2';
+
+    if ($migration_version === get_option('gfgf_v3_archive_content_migration')) {
+        return;
+    }
+
+    $migration_complete = true;
+    $sources_page = get_page_by_path('weitere-archive-quellen', OBJECT, 'page');
+
+    if (!$sources_page instanceof WP_Post) {
+        $sources_page_id = wp_insert_post(
+            wp_slash([
+                'post_type'   => 'page',
+                'post_status' => 'publish',
+                'post_title'  => 'Weitere Archive & Quellen',
+                'post_name'   => 'weitere-archive-quellen',
+            ]),
+            true
+        );
+
+        if (is_wp_error($sources_page_id)) {
+            $migration_complete = false;
+        } else {
+            $sources_page = get_post((int) $sources_page_id);
+        }
+    }
+
+    $migrations = [
+        'das-gfgf-archiv' => 'gfgf-archiv.php',
+        'archiv-besuchen' => 'gfgf-archiv-hainichen.php',
+    ];
+
+    foreach ($migrations as $slug => $pattern_file) {
+        $page = get_page_by_path($slug, OBJECT, 'page');
+
+        if (!$page instanceof WP_Post) {
+            $migration_complete = false;
+            continue;
+        }
+
+        if ('' !== trim((string) $page->post_content)) {
+            if ('das-gfgf-archiv' === $slug && $sources_page instanceof WP_Post) {
+                $fallback_url = home_url('/weitere-archive-quellen/');
+                $permalink = get_permalink($sources_page);
+
+                if (is_string($permalink) && '' !== $permalink && str_contains((string) $page->post_content, $fallback_url)) {
+                    $result = wp_update_post(
+                        wp_slash([
+                            'ID'           => $page->ID,
+                            'post_content' => str_replace($fallback_url, $permalink, (string) $page->post_content),
+                        ]),
+                        true
+                    );
+
+                    if (is_wp_error($result)) {
+                        $migration_complete = false;
+                    }
+                }
+            }
+
+            continue;
+        }
+
+        $content = gfgf_v3_render_pattern_content($pattern_file);
+
+        if ('' === $content) {
+            $migration_complete = false;
+            continue;
+        }
+
+        $result = wp_update_post(
+            wp_slash([
+                'ID'           => $page->ID,
+                'post_content' => $content,
+            ]),
+            true
+        );
+
+        if (is_wp_error($result)) {
+            $migration_complete = false;
+        }
+    }
+
+    if ($migration_complete) {
+        update_option('gfgf_v3_archive_content_migration', $migration_version, false);
+    }
+}
+add_action('init', 'gfgf_v3_migrate_archive_pages_to_blocks', 30);

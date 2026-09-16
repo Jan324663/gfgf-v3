@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.10.0
+Version: 0.11.0
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -350,6 +350,23 @@ input:focus {
     padding: 64px 0 72px;
 }
 
+.archive-landing__content > *,
+.archive-detail__content > *,
+.archive-landing .wp-block-group,
+.archive-detail .wp-block-group,
+.archive-landing .wp-block-image,
+.archive-detail .wp-block-image,
+.archive-landing .wp-block-buttons,
+.archive-detail .wp-block-buttons {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.archive-landing .wp-block-group__inner-container,
+.archive-detail .wp-block-group__inner-container {
+    display: contents;
+}
+
 .archive-landing__container {
     width: min(var(--gfgf-max-width), calc(100% - (var(--gfgf-margin-desktop) * 2)));
     margin: 0 auto;
@@ -426,6 +443,10 @@ input:focus {
     align-self: flex-start;
 }
 
+.archive-teaser > .wp-block-buttons {
+    margin-top: auto;
+}
+
 .archive-offer {
     display: flex;
     align-items: center;
@@ -456,6 +477,41 @@ input:focus {
 
 .archive-offer__button {
     flex: 0 0 auto;
+}
+
+.archive-offer > .wp-block-buttons {
+    flex: 0 0 auto;
+}
+
+.archive-teaser__button .wp-block-button__link,
+.archive-offer__button .wp-block-button__link,
+.archive-detail__hero-button .wp-block-button__link,
+.archive-tour__button .wp-block-button__link,
+.archive-visit__button .wp-block-button__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 28px;
+    color: var(--gfgf-on-primary);
+    background: var(--gfgf-primary);
+    border: 1px solid var(--gfgf-primary);
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.archive-teaser__button .wp-block-button__link:hover,
+.archive-offer__button .wp-block-button__link:hover,
+.archive-detail__hero-button .wp-block-button__link:hover,
+.archive-tour__button .wp-block-button__link:hover,
+.archive-visit__button .wp-block-button__link:hover {
+    color: var(--gfgf-on-primary);
+    background: var(--gfgf-primary-container);
+    border-color: var(--gfgf-primary-container);
 }
 
 .archive-detail {
@@ -595,14 +651,15 @@ input:focus {
     border-left: 0;
 }
 
-.archive-stat dt {
+.archive-stat__label {
+    margin: 0;
     color: var(--gfgf-text-muted);
     font-size: 14px;
     font-weight: 600;
     line-height: 1.35;
 }
 
-.archive-stat dd {
+.archive-stat__value {
     order: -1;
     margin: 0;
     color: var(--gfgf-primary);
@@ -630,6 +687,12 @@ input:focus {
     box-shadow: 0 8px 24px rgba(18, 28, 42, 0.1);
 }
 
+.archive-tour__media .wp-block-image {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
 .archive-tour__badge {
     position: absolute;
     top: 18px;
@@ -650,7 +713,7 @@ input:focus {
     color: var(--gfgf-text-muted);
 }
 
-.archive-tour__content .button {
+.archive-tour__content > .wp-block-buttons {
     margin-top: 24px;
 }
 
@@ -736,7 +799,7 @@ input:focus {
     border-top: 1px solid rgba(194, 198, 211, 0.8);
 }
 
-.archive-collection__more {
+.archive-collection__more .wp-block-button__link {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -754,14 +817,18 @@ input:focus {
     cursor: pointer;
 }
 
-.archive-collection__more:hover {
+.archive-collection__more .wp-block-button__link:hover {
     color: var(--gfgf-primary-container);
 }
 
-.archive-collection__more:focus-visible {
+.archive-collection__more .wp-block-button__link:focus-visible {
     outline: 3px solid var(--gfgf-focus);
     outline-offset: 3px;
     border-radius: 2px;
+}
+
+.archive-detail .archive-collection__dialog-source {
+    display: none;
 }
 
 .archive-collection-dialog {
@@ -866,7 +933,7 @@ input:focus {
     color: var(--gfgf-text-muted);
 }
 
-.archive-visit__content .button {
+.archive-visit__content > .wp-block-buttons {
     margin-top: 24px;
 }
 
@@ -881,11 +948,14 @@ input:focus {
     border-radius: 8px;
 }
 
-.archive-visit__address address {
+.archive-visit__address-lines {
     margin: 16px 0 10px;
     color: var(--gfgf-text);
-    font-style: normal;
     line-height: 1.65;
+}
+
+.archive-visit__map {
+    margin: 0;
 }
 
 .archive-visit__address a {
@@ -932,16 +1002,16 @@ input:focus {
     border-left: 2px solid var(--gfgf-border);
 }
 
-.archive-timeline li {
+.archive-timeline__item {
     position: relative;
     padding: 0 0 32px 12px;
 }
 
-.archive-timeline li:last-child {
+.archive-timeline__item:last-child {
     padding-bottom: 0;
 }
 
-.archive-timeline li::before {
+.archive-timeline__item::before {
     position: absolute;
     top: 7px;
     left: -39px;
@@ -954,9 +1024,9 @@ input:focus {
     box-shadow: 0 0 0 1px var(--gfgf-primary);
 }
 
-.archive-timeline li > span {
+.archive-timeline__date {
     display: block;
-    margin-bottom: 5px;
+    margin: 0 0 5px;
     color: var(--gfgf-tertiary);
     font-size: 14px;
     font-weight: 700;
@@ -1463,11 +1533,11 @@ input:focus {
         padding-left: 25px;
     }
 
-    .archive-timeline li {
+    .archive-timeline__item {
         padding-left: 8px;
     }
 
-    .archive-timeline li::before {
+    .archive-timeline__item::before {
         left: -34px;
     }
 }
@@ -1506,8 +1576,12 @@ input:focus {
 }
 
 @media (max-width: 480px) {
-    .archive-tour__content .button {
+    .archive-tour__button,
+    .archive-tour__button .wp-block-button__link {
         width: 100%;
+    }
+
+    .archive-tour__button .wp-block-button__link {
         padding-right: 16px;
         padding-left: 16px;
         text-align: center;
@@ -1527,13 +1601,13 @@ input:focus {
         padding: 14px 12px;
     }
 
-    .archive-stat dd {
+    .archive-stat__value {
         order: 0;
         flex: 0 0 auto;
         font-size: 1.5rem;
     }
 
-    .archive-stat dt {
+    .archive-stat__label {
         order: -1;
         min-width: 0;
     }
