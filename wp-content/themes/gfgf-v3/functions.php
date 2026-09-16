@@ -14,8 +14,8 @@ add_action('after_setup_theme', function (): void {
     add_theme_support('post-thumbnails');
     add_theme_support('html5', ['search-form', 'gallery', 'caption', 'style', 'script']);
     add_theme_support('custom-logo', [
-        'height'      => 96,
-        'width'       => 82,
+        'height'      => 84,
+        'width'       => 72,
         'flex-height' => true,
         'flex-width'  => true,
     ]);
