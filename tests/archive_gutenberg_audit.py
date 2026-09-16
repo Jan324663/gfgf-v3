@@ -37,6 +37,17 @@ def vertical_gap(page, upper_selector, lower_selector):
     )
 
 
+def horizontal_offset(page, first_selector, second_selector):
+    return page.evaluate(
+        """([firstSelector, secondSelector]) => {
+            const first = document.querySelector(firstSelector).getBoundingClientRect();
+            const second = document.querySelector(secondSelector).getBoundingClientRect();
+            return Math.round((first.left - second.left) * 10) / 10;
+        }""",
+        [first_selector, second_selector],
+    )
+
+
 def document_boxes(page):
     return page.locator(
         ".archive-collection, .archive-collections__media"
@@ -93,6 +104,9 @@ with sync_playwright() as playwright:
             vertical_gap(page, ".archive-teasers", ".archive-offer")
             == expected_landing_gap
         )
+        assert horizontal_offset(
+            page, ".archive-landing__intro-inner", ".archive-teasers"
+        ) == 0
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
         if width > 1000:
             assert_internal_links(page, LANDING_URL)

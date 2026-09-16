@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.11.1
+Version: 0.11.2
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -367,7 +367,6 @@ input:focus {
 }
 
 .archive-landing__intro-inner {
-    max-width: 980px;
     margin-bottom: 40px;
 }
 
