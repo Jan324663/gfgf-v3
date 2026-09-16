@@ -15,10 +15,10 @@ defined('ABSPATH') || exit;
  * archive subpages without changing the page markup.
  */
 $archive_links = apply_filters('gfgf_v3_archive_links', [
-    'archive'   => home_url('/archiv-besuchen/'),
-    'documents' => home_url('/schaltplanservice/'),
-    'sources'   => home_url('/weitere-archive-quellen/'),
-    'offer'     => home_url('/kontakt/'),
+    'archive'   => gfgf_v3_page_url('archiv-besuchen'),
+    'documents' => gfgf_v3_page_url('schaltplanservice'),
+    'sources'   => gfgf_v3_page_url('weitere-archive-quellen'),
+    'offer'     => gfgf_v3_page_url('kontakt'),
 ]);
 
 get_header();

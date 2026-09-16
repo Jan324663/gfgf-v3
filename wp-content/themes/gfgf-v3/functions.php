@@ -44,16 +44,26 @@ add_action('wp_enqueue_scripts', function (): void {
     );
 });
 
+function gfgf_v3_page_url(string $slug): string
+{
+    $slug = trim($slug, '/');
+    $page = get_page_by_path($slug);
+
+    if ($page instanceof WP_Post) {
+        $permalink = get_permalink($page);
+        if (is_string($permalink) && '' !== $permalink) {
+            return $permalink;
+        }
+    }
+
+    return home_url('/' . $slug . '/');
+}
+
 function gfgf_v3_primary_nav_items(): array
 {
-    $archive_page = get_page_by_path('das-gfgf-archiv');
-    $archive_url = $archive_page instanceof WP_Post
-        ? get_permalink($archive_page)
-        : home_url('/das-gfgf-archiv/');
-
     return [
         ['label' => __('Über uns', 'gfgf-v3'), 'url' => home_url('/ueber-uns/')],
-        ['label' => __('Archiv', 'gfgf-v3'), 'url' => $archive_url],
+        ['label' => __('Archiv', 'gfgf-v3'), 'url' => gfgf_v3_page_url('das-gfgf-archiv')],
         ['label' => __('Funkgeschichte', 'gfgf-v3'), 'url' => home_url('/funkgeschichte/')],
         ['label' => __('Schaltplanservice', 'gfgf-v3'), 'url' => home_url('/schaltplanservice/')],
         ['label' => __('Mitgliedschaft', 'gfgf-v3'), 'url' => home_url('/mitgliedschaft/')],

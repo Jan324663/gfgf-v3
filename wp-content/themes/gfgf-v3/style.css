@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.3.0
+Version: 0.4.0
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -447,6 +447,407 @@ input:focus {
     flex: 0 0 auto;
 }
 
+.archive-detail {
+    overflow-wrap: break-word;
+}
+
+.archive-detail__container {
+    width: min(var(--gfgf-max-width), calc(100% - (var(--gfgf-margin-desktop) * 2)));
+    margin: 0 auto;
+}
+
+.archive-detail__hero {
+    padding: 64px 0;
+    background: var(--gfgf-surface-low);
+    border-bottom: 1px solid var(--gfgf-border);
+}
+
+.archive-detail__hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+    align-items: center;
+    gap: clamp(40px, 6vw, 80px);
+}
+
+.archive-detail__hero-copy h1 {
+    margin: 0;
+    color: var(--gfgf-primary);
+    font-size: clamp(2.25rem, 4.2vw, 3.35rem);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+}
+
+.archive-detail__tagline {
+    margin: 20px 0 0;
+    color: var(--gfgf-primary-container);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.archive-detail__hero-copy > p:not(.archive-detail__tagline) {
+    max-width: 720px;
+    margin: 20px 0 28px;
+    color: var(--gfgf-text-muted);
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.archive-detail__hero-media,
+.archive-tour__media,
+.archive-history__portrait {
+    margin: 0;
+    overflow: hidden;
+    background: var(--gfgf-surface-high);
+    border: 1px solid var(--gfgf-border);
+    border-radius: 8px;
+}
+
+.archive-detail__hero-media {
+    aspect-ratio: 1.08;
+    box-shadow: 0 12px 32px rgba(18, 28, 42, 0.14);
+}
+
+.archive-detail__hero-media img,
+.archive-tour__media img,
+.archive-history__portrait img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.archive-detail__section {
+    padding: 72px 0;
+}
+
+.archive-detail__section--compact {
+    padding: 32px 0 72px;
+}
+
+.archive-detail__section-heading {
+    max-width: 850px;
+    margin-bottom: 32px;
+}
+
+.archive-detail__section-heading--compact {
+    margin-bottom: 20px;
+}
+
+.archive-detail__section-heading h2,
+.archive-tour__content h2,
+.archive-visit__content h2 {
+    margin: 0;
+    color: var(--gfgf-primary);
+    font-size: clamp(1.8rem, 3vw, 2.35rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+}
+
+.archive-detail__section-heading p {
+    margin: 12px 0 0;
+    color: var(--gfgf-text-muted);
+    font-size: 18px;
+}
+
+.archive-detail__lead {
+    color: var(--gfgf-text);
+    font-size: 20px;
+    line-height: 1.55;
+}
+
+.archive-detail__stats-section {
+    padding-bottom: 56px;
+}
+
+.archive-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: var(--gfgf-surface);
+    border: 1px solid var(--gfgf-border);
+    border-radius: 8px;
+}
+
+.archive-stat {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+    padding: 22px 20px;
+    border-left: 1px solid var(--gfgf-border);
+}
+
+.archive-stat:first-child {
+    border-left: 0;
+}
+
+.archive-stat dt {
+    color: var(--gfgf-text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.archive-stat dd {
+    order: -1;
+    margin: 0;
+    color: var(--gfgf-primary);
+    font-size: clamp(1.45rem, 2.6vw, 2rem);
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.archive-tour {
+    background: var(--gfgf-surface-high);
+    border-top: 1px solid var(--gfgf-border);
+    border-bottom: 1px solid var(--gfgf-border);
+}
+
+.archive-tour__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+    align-items: center;
+    gap: clamp(36px, 6vw, 72px);
+}
+
+.archive-tour__media {
+    aspect-ratio: 16 / 10;
+    box-shadow: 0 8px 24px rgba(18, 28, 42, 0.1);
+}
+
+.archive-tour__content > p {
+    margin: 16px 0 0;
+    color: var(--gfgf-text-muted);
+}
+
+.archive-tour__content .button {
+    margin-top: 24px;
+}
+
+.archive-tour__privacy {
+    max-width: 560px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.archive-collections {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gfgf-gutter);
+}
+
+.archive-collection {
+    padding: 28px;
+    background: var(--gfgf-surface);
+    border: 1px solid var(--gfgf-border);
+    border-top: 4px solid var(--gfgf-primary);
+    border-radius: 8px;
+}
+
+.archive-collection h3,
+.archive-visit__address h3,
+.archive-timeline h3,
+.archive-download-group h3 {
+    margin: 0;
+    color: var(--gfgf-primary);
+    font-size: 21px;
+    line-height: 1.35;
+}
+
+.archive-collection p {
+    margin: 12px 0 0;
+    color: var(--gfgf-text-muted);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.archive-visit {
+    scroll-margin-top: 160px;
+    padding-top: 32px;
+}
+
+.archive-visit__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+    gap: clamp(32px, 6vw, 72px);
+    padding: 48px;
+    background: var(--gfgf-surface-high);
+    border: 1px solid var(--gfgf-border);
+    border-radius: 8px;
+}
+
+.archive-visit__content p {
+    max-width: 760px;
+    margin: 16px 0 0;
+    color: var(--gfgf-text-muted);
+}
+
+.archive-visit__content .button {
+    margin-top: 24px;
+}
+
+.archive-visit__address {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 28px;
+    background: var(--gfgf-surface);
+    border: 1px solid var(--gfgf-border);
+    border-radius: 8px;
+}
+
+.archive-visit__address address {
+    margin: 16px 0;
+    color: var(--gfgf-text);
+    font-style: normal;
+    line-height: 1.65;
+}
+
+.archive-visit__address a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.archive-history {
+    background: var(--gfgf-surface);
+    border-top: 1px solid rgba(194, 198, 211, 0.7);
+    border-bottom: 1px solid rgba(194, 198, 211, 0.7);
+}
+
+.archive-history__grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(36px, 6vw, 72px);
+}
+
+.archive-history__portrait {
+    background: var(--gfgf-surface-low);
+}
+
+.archive-history__portrait img {
+    aspect-ratio: 1;
+}
+
+.archive-history__portrait figcaption {
+    padding: 12px 16px;
+    color: var(--gfgf-text-muted);
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.archive-timeline {
+    margin: 0;
+    padding: 0 0 0 30px;
+    list-style: none;
+    border-left: 2px solid var(--gfgf-border);
+}
+
+.archive-timeline li {
+    position: relative;
+    padding: 0 0 32px 12px;
+}
+
+.archive-timeline li:last-child {
+    padding-bottom: 0;
+}
+
+.archive-timeline li::before {
+    position: absolute;
+    top: 7px;
+    left: -39px;
+    width: 14px;
+    height: 14px;
+    content: '';
+    background: var(--gfgf-primary);
+    border: 3px solid var(--gfgf-surface);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--gfgf-primary);
+}
+
+.archive-timeline li > span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--gfgf-tertiary);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.archive-timeline p {
+    margin: 8px 0 0;
+    color: var(--gfgf-text-muted);
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+.archive-detail__donation.archive-offer {
+    margin-top: 0;
+}
+
+.archive-downloads {
+    padding-top: 48px;
+}
+
+.archive-downloads__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--gfgf-gutter);
+}
+
+.archive-download-group {
+    min-width: 0;
+    padding: 28px;
+    background: var(--gfgf-surface);
+    border: 1px solid var(--gfgf-border);
+    border-radius: 8px;
+}
+
+.archive-download-group ul {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.archive-download-group li + li {
+    border-top: 1px solid rgba(194, 198, 211, 0.7);
+}
+
+.archive-download-group a {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 56px;
+    flex-direction: column;
+    padding: 10px 0;
+    color: var(--gfgf-primary);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+}
+
+.archive-download-group a:hover {
+    text-decoration: underline;
+}
+
+.archive-download-group small {
+    margin-top: 3px;
+    color: var(--gfgf-text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
 .site-footer {
     color: var(--gfgf-text);
     background: var(--gfgf-surface-dim);
@@ -568,7 +969,8 @@ input:focus {
     .site-header__inner,
     .site-footer__inner,
     .content-area,
-    .archive-landing__container {
+    .archive-landing__container,
+    .archive-detail__container {
         width: min(100% - (var(--gfgf-margin-mobile) * 2), var(--gfgf-max-width));
     }
 
@@ -581,6 +983,43 @@ input:focus {
     }
 
     .archive-teaser:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .archive-detail__hero-grid,
+    .archive-tour__grid,
+    .archive-visit__panel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .archive-detail__hero-media {
+        width: min(100%, 720px);
+        aspect-ratio: 16 / 10;
+    }
+
+    .archive-stats {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 1px;
+        background: var(--gfgf-border);
+    }
+
+    .archive-stat,
+    .archive-stat:first-child {
+        grid-column: span 2;
+        background: var(--gfgf-surface);
+        border-left: 0;
+    }
+
+    .archive-stat:nth-last-child(-n + 2) {
+        grid-column: span 3;
+    }
+
+    .archive-collections,
+    .archive-downloads__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .archive-download-group:last-child {
         grid-column: 1 / -1;
     }
 }
@@ -722,6 +1161,97 @@ input:focus {
         margin-top: 28px;
         padding: 22px 20px;
     }
+
+    .archive-detail__hero {
+        padding: 40px 0 48px;
+    }
+
+    .archive-detail__hero-grid {
+        gap: 32px;
+    }
+
+    .archive-detail__hero-copy h1 {
+        font-size: clamp(2rem, 10vw, 2.7rem);
+    }
+
+    .archive-detail__section {
+        padding: 48px 0;
+    }
+
+    .archive-detail__section--compact {
+        padding: 20px 0 48px;
+    }
+
+    .archive-detail__stats-section {
+        padding-bottom: 40px;
+    }
+
+    .archive-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .archive-stat,
+    .archive-stat:first-child {
+        grid-column: auto;
+        padding: 18px;
+    }
+
+    .archive-stat:nth-last-child(-n + 2) {
+        grid-column: auto;
+    }
+
+    .archive-stat:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .archive-collections,
+    .archive-downloads__grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .archive-download-group:last-child {
+        grid-column: auto;
+    }
+
+    .archive-collection,
+    .archive-download-group {
+        padding: 24px;
+    }
+
+    .archive-visit {
+        padding-top: 12px;
+        scroll-margin-top: 150px;
+    }
+
+    .archive-visit__panel {
+        gap: 28px;
+        padding: 28px 24px;
+    }
+
+    .archive-visit__address {
+        padding: 22px;
+    }
+
+    .archive-history__grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+    }
+
+    .archive-history__portrait {
+        width: min(100%, 300px);
+    }
+
+    .archive-timeline {
+        padding-left: 25px;
+    }
+
+    .archive-timeline li {
+        padding-left: 8px;
+    }
+
+    .archive-timeline li::before {
+        left: -34px;
+    }
 }
 
 @media (max-width: 840px) {
@@ -754,6 +1284,40 @@ input:focus {
 
     .site-search__button {
         padding: 0 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .archive-tour__content .button {
+        width: 100%;
+        padding-right: 16px;
+        padding-left: 16px;
+        text-align: center;
+        white-space: normal;
+    }
+
+    .archive-stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .archive-stat {
+        grid-column: auto;
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 14px 12px;
+    }
+
+    .archive-stat dd {
+        order: 0;
+        flex: 0 0 auto;
+        font-size: 1.5rem;
+    }
+
+    .archive-stat dt {
+        order: -1;
+        min-width: 0;
     }
 }
 
