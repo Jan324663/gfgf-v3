@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.11.0
+Version: 0.11.1
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -350,14 +350,8 @@ input:focus {
     padding: 64px 0 72px;
 }
 
-.archive-landing__content > *,
-.archive-detail__content > *,
-.archive-landing .wp-block-group,
-.archive-detail .wp-block-group,
-.archive-landing .wp-block-image,
-.archive-detail .wp-block-image,
-.archive-landing .wp-block-buttons,
-.archive-detail .wp-block-buttons {
+:where(.archive-landing__content, .archive-detail__content) > *,
+:where(.archive-landing, .archive-detail) :where(.wp-block-group, .wp-block-image, .wp-block-buttons) {
     margin-block-start: 0;
     margin-block-end: 0;
 }
@@ -443,7 +437,7 @@ input:focus {
     align-self: flex-start;
 }
 
-.archive-teaser > .wp-block-buttons {
+.archive-teaser > .wp-block-group__inner-container > .wp-block-buttons {
     margin-top: auto;
 }
 
@@ -479,7 +473,7 @@ input:focus {
     flex: 0 0 auto;
 }
 
-.archive-offer > .wp-block-buttons {
+.archive-offer > .wp-block-group__inner-container > .wp-block-buttons {
     flex: 0 0 auto;
 }
 
@@ -552,7 +546,7 @@ input:focus {
     line-height: 1.4;
 }
 
-.archive-detail__hero-copy > p:not(.archive-detail__tagline) {
+.archive-detail__hero-copy > .wp-block-group__inner-container > p:not(.archive-detail__tagline) {
     max-width: 720px;
     margin: 20px 0 28px;
     color: var(--gfgf-text-muted);
@@ -697,6 +691,7 @@ input:focus {
     position: absolute;
     top: 18px;
     left: 18px;
+    margin: 0;
     padding: 8px 12px;
     color: var(--gfgf-on-primary);
     background: rgba(0, 63, 131, 0.92);
@@ -708,12 +703,12 @@ input:focus {
     letter-spacing: 0.02em;
 }
 
-.archive-tour__content > p {
+.archive-tour__content > .wp-block-group__inner-container > p {
     margin: 16px 0 0;
     color: var(--gfgf-text-muted);
 }
 
-.archive-tour__content > .wp-block-buttons {
+.archive-tour__content > .wp-block-group__inner-container > .wp-block-buttons {
     margin-top: 24px;
 }
 
@@ -933,7 +928,7 @@ input:focus {
     color: var(--gfgf-text-muted);
 }
 
-.archive-visit__content > .wp-block-buttons {
+.archive-visit__content > .wp-block-group__inner-container > .wp-block-buttons {
     margin-top: 24px;
 }
 
@@ -988,6 +983,7 @@ input:focus {
 }
 
 .archive-history__portrait figcaption {
+    margin: 0;
     padding: 12px 16px;
     color: var(--gfgf-text-muted);
     font-size: 15px;
@@ -1024,7 +1020,7 @@ input:focus {
     box-shadow: 0 0 0 1px var(--gfgf-primary);
 }
 
-.archive-timeline__date {
+.archive-timeline .archive-timeline__date {
     display: block;
     margin: 0 0 5px;
     color: var(--gfgf-tertiary);

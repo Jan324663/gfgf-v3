@@ -18,6 +18,25 @@ IGNORE_HTTPS_ERRORS = os.environ.get("GFGF_IGNORE_HTTPS_ERRORS") == "1"
 VIEWPORTS = ((390, 844), (1366, 768))
 
 
+def computed_px(page, selector, property_name):
+    return page.locator(selector).first.evaluate(
+        """(element, propertyName) =>
+            parseFloat(getComputedStyle(element).getPropertyValue(propertyName))""",
+        property_name,
+    )
+
+
+def vertical_gap(page, upper_selector, lower_selector):
+    return page.evaluate(
+        """([upperSelector, lowerSelector]) => {
+            const upper = document.querySelector(upperSelector).getBoundingClientRect();
+            const lower = document.querySelector(lowerSelector).getBoundingClientRect();
+            return Math.round((lower.top - upper.bottom) * 10) / 10;
+        }""",
+        [upper_selector, lower_selector],
+    )
+
+
 def document_boxes(page):
     return page.locator(
         ".archive-collection, .archive-collections__media"
@@ -66,6 +85,14 @@ with sync_playwright() as playwright:
         page.goto(LANDING_URL, wait_until="domcontentloaded")
         assert page.locator(".archive-teaser").count() == 3
         assert page.locator(".archive-offer").count() == 1
+        expected_landing_gap = 28 if width <= 720 else 40
+        assert vertical_gap(
+            page, ".archive-landing__intro-inner", ".archive-teasers"
+        ) == expected_landing_gap
+        assert (
+            vertical_gap(page, ".archive-teasers", ".archive-offer")
+            == expected_landing_gap
+        )
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
         if width > 1000:
             assert_internal_links(page, LANDING_URL)
@@ -84,6 +111,20 @@ with sync_playwright() as playwright:
         assert page.locator(".archive-collection").count() == 6
         assert page.locator(".archive-collection__dialog-source").count() == 6
         assert page.locator(".archive-download-group a").count() == 18
+        assert computed_px(
+            page,
+            ".archive-detail__hero-copy > .wp-block-group__inner-container > p:not(.archive-detail__tagline)",
+            "margin-bottom",
+        ) == 28
+        assert computed_px(page, ".archive-tour__badge", "margin-top") == 0
+        assert computed_px(
+            page, ".archive-tour__content .wp-block-buttons", "margin-top"
+        ) == 24
+        assert computed_px(
+            page, ".archive-visit__content .wp-block-buttons", "margin-top"
+        ) == 24
+        assert computed_px(page, ".archive-timeline__date", "margin-top") == 0
+        assert computed_px(page, ".archive-timeline__date", "margin-bottom") == 5
 
         images = page.locator(".archive-detail__content img")
         assert images.count() == 5
