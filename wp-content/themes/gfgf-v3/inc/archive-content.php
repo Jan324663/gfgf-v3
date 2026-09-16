@@ -174,3 +174,50 @@ function gfgf_v3_upgrade_archive_landing_design(): void
     }
 }
 add_action('init', 'gfgf_v3_upgrade_archive_landing_design', 31);
+
+/**
+ * Fill the existing sources page once with ordinary editable Gutenberg blocks.
+ *
+ * Existing editorial content is never overwritten. The template only provides
+ * the page shell; all visible copy, URLs and images live in post_content.
+ */
+function gfgf_v3_migrate_archive_sources_page(): void
+{
+    $migration_version = '2026-09-16-archive-sources-v1';
+
+    if ($migration_version === get_option('gfgf_v3_archive_sources_migration')) {
+        return;
+    }
+
+    $page = get_page_by_path('weitere-archive-quellen', OBJECT, 'page');
+
+    if (!$page instanceof WP_Post) {
+        return;
+    }
+
+    update_post_meta($page->ID, '_wp_page_template', 'page-weitere-archive-quellen.php');
+
+    if ('' !== trim((string) $page->post_content)) {
+        update_option('gfgf_v3_archive_sources_migration', $migration_version, false);
+        return;
+    }
+
+    $content = gfgf_v3_render_pattern_content('gfgf-archiv-quellen.php');
+
+    if ('' === $content) {
+        return;
+    }
+
+    $result = wp_update_post(
+        wp_slash([
+            'ID'           => $page->ID,
+            'post_content' => $content,
+        ]),
+        true
+    );
+
+    if (!is_wp_error($result)) {
+        update_option('gfgf_v3_archive_sources_migration', $migration_version, false);
+    }
+}
+add_action('init', 'gfgf_v3_migrate_archive_sources_page', 32);
