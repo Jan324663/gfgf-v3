@@ -186,7 +186,9 @@ get_header();
                                         <span class="archive-collection__toggle archive-collection__toggle--open"><?php esc_html_e('Mehr erfahren', 'gfgf-v3'); ?></span>
                                         <span class="archive-collection__toggle archive-collection__toggle--close"><?php esc_html_e('Weniger anzeigen', 'gfgf-v3'); ?></span>
                                     </summary>
-                                    <p><?php echo esc_html($collection['details']); ?></p>
+                                    <div class="archive-collection__details-content">
+                                        <p><?php echo esc_html($collection['details']); ?></p>
+                                    </div>
                                 </details>
                             </article>
                         <?php endforeach; ?>
@@ -212,7 +214,9 @@ get_header();
                                         <span class="archive-collection__toggle archive-collection__toggle--open"><?php esc_html_e('Mehr erfahren', 'gfgf-v3'); ?></span>
                                         <span class="archive-collection__toggle archive-collection__toggle--close"><?php esc_html_e('Weniger anzeigen', 'gfgf-v3'); ?></span>
                                     </summary>
-                                    <p><?php echo esc_html($collection['details']); ?></p>
+                                    <div class="archive-collection__details-content">
+                                        <p><?php echo esc_html($collection['details']); ?></p>
+                                    </div>
                                 </details>
                             </article>
                         <?php endforeach; ?>

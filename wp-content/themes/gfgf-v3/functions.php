@@ -48,6 +48,16 @@ add_action('wp_enqueue_scripts', function (): void {
         wp_get_theme()->get('Version'),
         true
     );
+
+    if (is_page_template('page-archiv-besuchen.php')) {
+        wp_enqueue_script(
+            'gfgf-v3-archive-details',
+            get_template_directory_uri() . '/assets/js/archive-details.js',
+            [],
+            wp_get_theme()->get('Version'),
+            true
+        );
+    }
 });
 
 function gfgf_v3_page_url(string $slug): string
