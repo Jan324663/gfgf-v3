@@ -13,10 +13,18 @@ final class Plugin
 {
     public const TABLE = 'gfgf_service_docs';
     public const ROLE = 'gfgf_service_doc_editor';
+    private const DB_VERSION = '0.2.1';
+    private const RECIPIENT_OPTION = 'gfgf_service_docs_recipient_email';
 
     public static function init(): void
     {
         add_action('init', [self::class, 'register_post_type']);
+        add_action('init', [self::class, 'register_blocks'], 20);
+        add_action('init', [self::class, 'maybe_upgrade_schema'], 5);
+        add_action('admin_post_gfgf_service_doc_request', [Frontend::class, 'handle_request']);
+        add_action('admin_post_nopriv_gfgf_service_doc_request', [Frontend::class, 'handle_request']);
+        add_action('admin_init', [self::class, 'register_settings']);
+        add_action('admin_menu', [self::class, 'register_settings_page']);
     }
 
     public static function activate(): void
@@ -24,6 +32,8 @@ final class Plugin
         self::create_tables();
         self::create_roles();
         self::register_post_type();
+        add_option(self::RECIPIENT_OPTION, 'archiv@gfgf.org', '', false);
+        update_option('gfgf_service_docs_db_version', self::DB_VERSION, false);
         flush_rewrite_rules();
     }
 
@@ -52,6 +62,107 @@ final class Plugin
             'capability_type'    => ['gfgf_service_doc', 'gfgf_service_docs'],
             'map_meta_cap'       => true,
         ]);
+    }
+
+    public static function register_blocks(): void
+    {
+        register_block_type(
+            GFGF_SERVICE_DOCS_PATH . 'blocks/search',
+            [
+                'render_callback' => [Frontend::class, 'render_search_block'],
+            ]
+        );
+    }
+
+    public static function maybe_upgrade_schema(): void
+    {
+        if (self::DB_VERSION === get_option('gfgf_service_docs_db_version')) {
+            return;
+        }
+
+        self::create_tables();
+        add_option(self::RECIPIENT_OPTION, 'archiv@gfgf.org', '', false);
+        update_option('gfgf_service_docs_db_version', self::DB_VERSION, false);
+    }
+
+    public static function recipient_email(): string
+    {
+        $configured = sanitize_email((string) get_option(self::RECIPIENT_OPTION, ''));
+        if ('' === $configured) {
+            $configured = sanitize_email((string) get_option('admin_email'));
+        }
+
+        $filtered = sanitize_email((string) apply_filters('gfgf_service_docs_recipient_email', $configured));
+
+        return '' !== $filtered ? $filtered : sanitize_email((string) get_option('admin_email'));
+    }
+
+    public static function register_settings(): void
+    {
+        register_setting(
+            'gfgf_service_docs_settings',
+            self::RECIPIENT_OPTION,
+            [
+                'type'              => 'string',
+                'sanitize_callback' => 'sanitize_email',
+                'default'           => 'archiv@gfgf.org',
+            ]
+        );
+
+        add_settings_section(
+            'gfgf_service_docs_mail',
+            __('Anfragen', 'gfgf-service-docs'),
+            '__return_false',
+            'gfgf-service-docs'
+        );
+
+        add_settings_field(
+            self::RECIPIENT_OPTION,
+            __('Empfängeradresse', 'gfgf-service-docs'),
+            [self::class, 'render_recipient_field'],
+            'gfgf-service-docs',
+            'gfgf_service_docs_mail'
+        );
+    }
+
+    public static function register_settings_page(): void
+    {
+        add_options_page(
+            __('GFGF Schaltplanservice', 'gfgf-service-docs'),
+            __('GFGF Schaltplanservice', 'gfgf-service-docs'),
+            'manage_options',
+            'gfgf-service-docs',
+            [self::class, 'render_settings_page']
+        );
+    }
+
+    public static function render_recipient_field(): void
+    {
+        printf(
+            '<input class="regular-text" type="email" name="%1$s" value="%2$s" required>',
+            esc_attr(self::RECIPIENT_OPTION),
+            esc_attr(self::recipient_email())
+        );
+        echo '<p class="description">' . esc_html__('An diese Adresse werden neue Unterlagenanfragen gesendet.', 'gfgf-service-docs') . '</p>';
+    }
+
+    public static function render_settings_page(): void
+    {
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+        ?>
+        <div class="wrap">
+            <h1><?php esc_html_e('GFGF Schaltplanservice', 'gfgf-service-docs'); ?></h1>
+            <form action="options.php" method="post">
+                <?php
+                settings_fields('gfgf_service_docs_settings');
+                do_settings_sections('gfgf-service-docs');
+                submit_button();
+                ?>
+            </form>
+        </div>
+        <?php
     }
 
     private static function create_tables(): void
@@ -89,10 +200,10 @@ final class Plugin
             search_text LONGTEXT NULL,
             status VARCHAR(32) NOT NULL DEFAULT 'published',
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
             UNIQUE KEY contao_id (contao_id),
-            KEY idx_value (idx_value),
+            UNIQUE KEY idx_value (idx_value),
             KEY jahr (jahr),
             KEY status (status),
             KEY firma (firma(191)),
@@ -100,6 +211,33 @@ final class Plugin
         ) {$charset};";
 
         dbDelta($sql);
+        self::ensure_unique_idx($table);
+    }
+
+    private static function ensure_unique_idx(string $table): void
+    {
+        global $wpdb;
+
+        $duplicate_count = (int) $wpdb->get_var(
+            "SELECT COUNT(*) FROM (
+                SELECT idx_value FROM {$table}
+                WHERE idx_value IS NOT NULL AND idx_value <> ''
+                GROUP BY idx_value HAVING COUNT(*) > 1
+            ) duplicate_idx"
+        );
+
+        if ($duplicate_count > 0) {
+            return;
+        }
+
+        $indexes = $wpdb->get_results("SHOW INDEX FROM {$table} WHERE Key_name = 'idx_value'", ARRAY_A);
+        $is_unique = is_array($indexes)
+            && [] !== $indexes
+            && 0 === (int) $indexes[0]['Non_unique'];
+
+        if (!$is_unique) {
+            $wpdb->query("ALTER TABLE {$table} DROP INDEX idx_value, ADD UNIQUE KEY idx_value (idx_value)");
+        }
     }
 
     private static function create_roles(): void
@@ -131,4 +269,3 @@ final class Plugin
         }
     }
 }
-

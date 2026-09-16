@@ -1,0 +1,56 @@
+.wp-block-gfgf-service-docs-search.service-docs-editor-preview {
+    padding: 28px;
+    background: #f8f9ff;
+    border: 1px solid #c2c6d3;
+    border-radius: 8px;
+}
+
+.service-docs-editor-preview__label {
+    color: #653400;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.service-docs-editor-preview h2 {
+    margin: 8px 0 18px;
+    color: #003f83;
+}
+
+.service-docs-editor-preview label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 700;
+}
+
+.service-docs-editor-preview__form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+}
+
+.service-docs-editor-preview__input,
+.service-docs-editor-preview__button {
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 8px;
+}
+
+.service-docs-editor-preview__input {
+    color: #666;
+    background: #fff;
+    border: 1px solid #c2c6d3;
+}
+
+.service-docs-editor-preview__button {
+    color: #fff;
+    background: #003f83;
+    font-weight: 700;
+}
+
+.service-docs-editor-preview small {
+    display: block;
+    margin-top: 18px;
+    color: #424751;
+}

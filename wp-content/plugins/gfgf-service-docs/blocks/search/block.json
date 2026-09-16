@@ -1,0 +1,37 @@
+{
+  "apiVersion": 3,
+  "name": "gfgf-service-docs/search",
+  "version": "0.2.1",
+  "title": "GFGF Dokumentensuche",
+  "category": "widgets",
+  "icon": "search",
+  "description": "Suche und Einzelanfrage für den Bestand der GFGF-Serviceunterlagen.",
+  "textdomain": "gfgf-service-docs",
+  "attributes": {
+    "searchHeading": { "type": "string", "default": "Archivbestand durchsuchen" },
+    "searchLabel": { "type": "string", "default": "Hersteller, Gerät, Typ oder Stichwort" },
+    "searchPlaceholder": { "type": "string", "default": "Hersteller, Gerät, Typ oder Stichwort" },
+    "searchButtonLabel": { "type": "string", "default": "Suchen" },
+    "detailsLabel": { "type": "string", "default": "Details anzeigen" },
+    "requestButtonLabel": { "type": "string", "default": "Unterlage anfragen" },
+    "requestHeading": { "type": "string", "default": "Unterlage anfragen" },
+    "requestIntro": { "type": "string", "default": "Bitte geben Sie Ihre Kontaktdaten ein. Die ausgewählte Unterlage wird der Anfrage automatisch und unveränderbar zugeordnet." },
+    "firstNameLabel": { "type": "string", "default": "Vorname" },
+    "lastNameLabel": { "type": "string", "default": "Nachname" },
+    "emailLabel": { "type": "string", "default": "E-Mail-Adresse" },
+    "memberLabel": { "type": "string", "default": "Ich bin Mitglied der GFGF e.V." },
+    "messageLabel": { "type": "string", "default": "Nachricht / Anmerkung" },
+    "submitLabel": { "type": "string", "default": "Anfrage absenden" },
+    "privacyNotice": { "type": "string", "default": "Ihre Angaben werden ausschließlich zur Bearbeitung dieser Anfrage verwendet." },
+    "emptySearchNotice": { "type": "string", "default": "Geben Sie bis zu vier Suchbegriffe ein. Alle Begriffe müssen im Datensatz vorkommen." },
+    "noResultsNotice": { "type": "string", "default": "Zu Ihrer Suche wurden keine Unterlagen gefunden. Versuchen Sie es mit weniger oder allgemeineren Begriffen." },
+    "successNotice": { "type": "string", "default": "Vielen Dank. Ihre Anfrage wurde erfolgreich an den Archiv-Verantwortlichen gesendet." }
+  },
+  "supports": {
+    "html": false,
+    "multiple": false
+  },
+  "editorScript": "file:./editor.js",
+  "editorStyle": "file:./editor.css",
+  "style": "file:./style.css"
+}

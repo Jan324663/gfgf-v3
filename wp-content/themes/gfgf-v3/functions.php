@@ -106,3 +106,4 @@ function gfgf_v3_footer_nav_items(): array
 }
 
 require_once get_template_directory() . '/inc/archive-content.php';
+require_once get_template_directory() . '/inc/service-docs-content.php';
