@@ -3,7 +3,7 @@ Theme Name: GFGF V3
 Theme URI: https://www.gfgf.org/
 Author: GFGF
 Description: Eigenes WordPress-Theme fuer gfgf.org V3.
-Version: 0.8.0
+Version: 0.9.0
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.1
@@ -729,6 +729,55 @@ input:focus {
     color: var(--gfgf-text-muted);
     font-size: 16px;
     line-height: 1.6;
+}
+
+.archive-collection__details {
+    margin-top: 12px;
+    border-top: 1px solid rgba(194, 198, 211, 0.8);
+}
+
+.archive-collection__details summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 7px 0;
+    color: var(--gfgf-primary);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    list-style: none;
+    cursor: pointer;
+}
+
+.archive-collection__details summary::-webkit-details-marker {
+    display: none;
+}
+
+.archive-collection__details summary:hover {
+    color: var(--gfgf-primary-container);
+}
+
+.archive-collection__details summary:focus-visible {
+    outline: 3px solid var(--gfgf-focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+.archive-collection__toggle--close,
+.archive-collection__details[open] .archive-collection__toggle--open {
+    display: none;
+}
+
+.archive-collection__details[open] .archive-collection__toggle--close {
+    display: inline;
+}
+
+.archive-collection__details > p {
+    margin: 0 0 12px;
+    color: var(--gfgf-text);
 }
 
 .archive-visit {

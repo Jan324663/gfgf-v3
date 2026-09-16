@@ -28,28 +28,34 @@ $archive_stats = apply_filters('gfgf_v3_archive_stats', [
 
 $archive_collections = [
     [
-        'title' => __('Schaltpläne & Serviceunterlagen', 'gfgf-v3'),
-        'text'  => __('Historische technische Unterlagen zu Radios, Fernsehgeräten und weiterer Unterhaltungselektronik.', 'gfgf-v3'),
+        'title'   => __('Schaltpläne & Serviceunterlagen', 'gfgf-v3'),
+        'text'    => __('Historische technische Unterlagen zu Radios, Fernsehgeräten und weiterer Unterhaltungselektronik.', 'gfgf-v3'),
+        'details' => __('Im Archiv lagern gut 40.000 Serviceunterlagen zu hergestellten Geräten. Sie dokumentieren zahlreiche historische Geräte der Rundfunk- und Unterhaltungselektronik. Die Unterlagen gehören zu den systematisch erschlossenen Beständen und können gezielt recherchiert werden.', 'gfgf-v3'),
     ],
     [
-        'title' => __('Bücher & Fachliteratur', 'gfgf-v3'),
-        'text'  => __('Fachbücher zur Entwicklung, Technik und Geschichte des Rundfunks und seiner Geräte.', 'gfgf-v3'),
+        'title'   => __('Bücher & Fachliteratur', 'gfgf-v3'),
+        'text'    => __('Fachbücher zur Entwicklung, Technik und Geschichte des Rundfunks und seiner Geräte.', 'gfgf-v3'),
+        'details' => __('Auf etwas mehr als 30 m² befinden sich rund 5.500 Bücher, die für eine schnelle Suche nach den Nachnamen der Autoren sortiert sind. Die Themen reichen von Bauteilen und Geräten bis zu geschichtlichen Zusammenhängen. Etwa zehn Prozent der Bücher sind englischsprachig.', 'gfgf-v3'),
     ],
     [
-        'title' => __('Zeitschriften', 'gfgf-v3'),
-        'text'  => __('Historische Fachzeitschriften und vollständige Zeitschriftenjahrgänge aus vielen Jahrzehnten.', 'gfgf-v3'),
+        'title'   => __('Zeitschriften', 'gfgf-v3'),
+        'text'    => __('Historische Fachzeitschriften und vollständige Zeitschriftenjahrgänge aus vielen Jahrzehnten.', 'gfgf-v3'),
+        'details' => __('Der Bestand umfasst mehr als 3.300 Zeitschriftenjahrgänge und reicht von historischen Ausgaben bis zu jüngeren Jahrgängen. Dazu gehören unter anderem Funkamateur, Radio-Mentor, RFE, Funktechnik und Funkschau. Ergänzt wird die Sammlung durch Firmenzeitschriften und klassische Programmzeitschriften zu Rundfunk und Fernsehen.', 'gfgf-v3'),
     ],
     [
-        'title' => __('Kataloge & Firmenschriften', 'gfgf-v3'),
-        'text'  => __('Herstellerkataloge, Prospekte, Werbematerialien und Dokumentationen bedeutender Firmen.', 'gfgf-v3'),
+        'title'   => __('Kataloge & Firmenschriften', 'gfgf-v3'),
+        'text'    => __('Herstellerkataloge, Prospekte, Werbematerialien und Dokumentationen bedeutender Firmen.', 'gfgf-v3'),
+        'details' => __('Mehr als 1.000 Kataloge dokumentieren Herstellerwerbung und Firmengeschichte. Hinzu kommen Entwicklungsberichte von Telefunken und WF Berlin sowie Bauunterlagen zu Sendeanlagen. Auch die Blaubücher des DDR-Rundfunks gehören zu diesem Bestand.', 'gfgf-v3'),
     ],
     [
-        'title' => __('Bedienungsanleitungen', 'gfgf-v3'),
-        'text'  => __('Historische Bedienungs- und Gebrauchsanleitungen für Geräte der Heimelektronik.', 'gfgf-v3'),
+        'title'   => __('Bedienungsanleitungen', 'gfgf-v3'),
+        'text'    => __('Historische Bedienungs- und Gebrauchsanleitungen für Geräte der Heimelektronik.', 'gfgf-v3'),
+        'details' => __('Der Bestand enthält rund 2.000 Bedienungs- und Gebrauchsanleitungen. Sie erschließen zahlreiche Geräte aus der Geschichte der Rundfunk- und Unterhaltungselektronik.', 'gfgf-v3'),
     ],
     [
-        'title' => __('Fotos & besondere Sammlungen', 'gfgf-v3'),
-        'text'  => __('Fotografien, Entwicklungsberichte und weitere besondere technik- und firmengeschichtliche Bestände.', 'gfgf-v3'),
+        'title'   => __('Fotos & besondere Sammlungen', 'gfgf-v3'),
+        'text'    => __('Fotografien, Entwicklungsberichte und weitere besondere technik- und firmengeschichtliche Bestände.', 'gfgf-v3'),
+        'details' => __('Zum Archiv gehören tausende historische Fotografien und umfangreiche Mikrofiche-Bestände. Weitere Unterlagen behandeln militärische und kommerzielle Technik. Hinzu kommen spezielle technik- und firmengeschichtliche Sammlungen.', 'gfgf-v3'),
     ],
 ];
 
@@ -175,6 +181,13 @@ get_header();
                             <article class="archive-collection">
                                 <h3><?php echo esc_html($collection['title']); ?></h3>
                                 <p><?php echo esc_html($collection['text']); ?></p>
+                                <details class="archive-collection__details">
+                                    <summary>
+                                        <span class="archive-collection__toggle archive-collection__toggle--open"><?php esc_html_e('Mehr erfahren', 'gfgf-v3'); ?></span>
+                                        <span class="archive-collection__toggle archive-collection__toggle--close"><?php esc_html_e('Weniger anzeigen', 'gfgf-v3'); ?></span>
+                                    </summary>
+                                    <p><?php echo esc_html($collection['details']); ?></p>
+                                </details>
                             </article>
                         <?php endforeach; ?>
                     </div>
@@ -194,6 +207,13 @@ get_header();
                             <article class="archive-collection">
                                 <h3><?php echo esc_html($collection['title']); ?></h3>
                                 <p><?php echo esc_html($collection['text']); ?></p>
+                                <details class="archive-collection__details">
+                                    <summary>
+                                        <span class="archive-collection__toggle archive-collection__toggle--open"><?php esc_html_e('Mehr erfahren', 'gfgf-v3'); ?></span>
+                                        <span class="archive-collection__toggle archive-collection__toggle--close"><?php esc_html_e('Weniger anzeigen', 'gfgf-v3'); ?></span>
+                                    </summary>
+                                    <p><?php echo esc_html($collection['details']); ?></p>
+                                </details>
                             </article>
                         <?php endforeach; ?>
                     </div>
