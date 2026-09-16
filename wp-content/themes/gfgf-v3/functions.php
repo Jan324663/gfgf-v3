@@ -71,7 +71,6 @@ function gfgf_v3_primary_nav_items(): array
         ['label' => __('Über uns', 'gfgf-v3'), 'url' => gfgf_v3_page_url('ueber-uns')],
         ['label' => __('Archiv', 'gfgf-v3'), 'url' => gfgf_v3_page_url('das-gfgf-archiv')],
         ['label' => __('Funkgeschichte', 'gfgf-v3'), 'url' => gfgf_v3_page_url('funkgeschichte')],
-        ['label' => __('Schaltplanservice', 'gfgf-v3'), 'url' => gfgf_v3_page_url('schaltplanservice')],
         ['label' => __('Mitgliedschaft', 'gfgf-v3'), 'url' => gfgf_v3_page_url('mitgliedschaft')],
     ];
 }

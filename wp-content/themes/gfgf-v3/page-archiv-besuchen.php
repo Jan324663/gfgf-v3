@@ -138,6 +138,7 @@ get_header();
                     alt="<?php esc_attr_e('Bücherregale in einem Raum des GFGF-Archivs', 'gfgf-v3'); ?>"
                     loading="lazy"
                 >
+                <figcaption class="archive-tour__badge"><?php esc_html_e('360°-Rundgang', 'gfgf-v3'); ?></figcaption>
             </figure>
             <div class="archive-tour__content">
                 <h2 id="archive-tour-title"><?php esc_html_e('Virtuell durch unser Archiv', 'gfgf-v3'); ?></h2>
@@ -159,12 +160,44 @@ get_header();
                 <p><?php esc_html_e('Unsere Bestände dokumentieren Technik-, Firmen- und Mediengeschichte aus vielen Jahrzehnten.', 'gfgf-v3'); ?></p>
             </div>
             <div class="archive-collections">
-                <?php foreach ($archive_collections as $collection) : ?>
-                    <article class="archive-collection">
-                        <h3><?php echo esc_html($collection['title']); ?></h3>
-                        <p><?php echo esc_html($collection['text']); ?></p>
-                    </article>
-                <?php endforeach; ?>
+                <div class="archive-collections__row">
+                    <figure class="archive-collections__media">
+                        <img
+                            src="<?php echo esc_url($theme_uri . '/assets/images/archive/archive-service-files.jpg'); ?>"
+                            width="2338"
+                            height="1644"
+                            alt="<?php esc_attr_e('Regale mit geordneten Serviceunterlagen im GFGF-Archiv', 'gfgf-v3'); ?>"
+                            loading="lazy"
+                        >
+                    </figure>
+                    <div class="archive-collections__list">
+                        <?php foreach (array_slice($archive_collections, 0, 3) as $collection) : ?>
+                            <article class="archive-collection">
+                                <h3><?php echo esc_html($collection['title']); ?></h3>
+                                <p><?php echo esc_html($collection['text']); ?></p>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="archive-collections__row archive-collections__row--reverse">
+                    <figure class="archive-collections__media">
+                        <img
+                            src="<?php echo esc_url($theme_uri . '/assets/images/archive/archive-periodicals.jpg'); ?>"
+                            width="2334"
+                            height="1660"
+                            alt="<?php esc_attr_e('Regale mit gebundenen Zeitschriftenjahrgängen im GFGF-Archiv', 'gfgf-v3'); ?>"
+                            loading="lazy"
+                        >
+                    </figure>
+                    <div class="archive-collections__list">
+                        <?php foreach (array_slice($archive_collections, 3) as $collection) : ?>
+                            <article class="archive-collection">
+                                <h3><?php echo esc_html($collection['title']); ?></h3>
+                                <p><?php echo esc_html($collection['text']); ?></p>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -184,7 +217,6 @@ get_header();
                     Hospitalstraße 1<br>
                     09661 Hainichen
                 </address>
-                <a href="mailto:<?php echo esc_attr($archive_email); ?>"><?php echo esc_html($archive_email); ?></a>
                 <a href="<?php echo esc_url($directions_url); ?>" target="_blank" rel="noopener noreferrer">
                     <?php esc_html_e('Anfahrt in Google Maps', 'gfgf-v3'); ?>
                     <span class="screen-reader-text"><?php esc_html_e(' (öffnet auf einer externen Website)', 'gfgf-v3'); ?></span>
