@@ -23,9 +23,9 @@ defined('ABSPATH') || exit;
                 <a class="site-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('GFGF Startseite', 'gfgf-v3'); ?>">
                     <img
                         class="site-logo__image"
-                        src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/gfgf-logo.png'); ?>"
-                        width="123"
-                        height="122"
+                        src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/gfgf-logo-transparent.png'); ?>"
+                        width="60"
+                        height="70"
                         alt="<?php esc_attr_e('GFGF e.V.', 'gfgf-v3'); ?>"
                     >
                 </a>
