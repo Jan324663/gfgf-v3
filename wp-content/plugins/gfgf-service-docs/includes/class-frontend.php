@@ -162,7 +162,6 @@ final class Frontend
             'bemerkung1' => __('Bemerkung 1', 'gfgf-service-docs'),
             'bemerkung2' => __('Bemerkung 2', 'gfgf-service-docs'),
             'bemerkung3' => __('Bemerkung 3', 'gfgf-service-docs'),
-            'idx_value'  => __('idx', 'gfgf-service-docs'),
         ];
         $title = self::document_title($document);
         $request_url = add_query_arg(
@@ -293,7 +292,6 @@ final class Frontend
                         'dokumentart' => __('Dokumentart', 'gfgf-service-docs'),
                         'titel'       => __('Titel', 'gfgf-service-docs'),
                         'jahr'        => __('Jahr', 'gfgf-service-docs'),
-                        'idx_value'   => __('idx', 'gfgf-service-docs'),
                     ],
                     'service-docs-request__document-data'
                 );
@@ -574,7 +572,7 @@ final class Frontend
             return $document['titel'];
         }
 
-        return sprintf(__('Unterlage idx %s', 'gfgf-service-docs'), $document['idx_value'] ?? '');
+        return __('Unterlage', 'gfgf-service-docs');
     }
 
     /** @param array<string, mixed> $attributes */

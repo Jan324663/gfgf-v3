@@ -76,7 +76,7 @@ with sync_playwright() as playwright:
         details = card.locator("details")
         details.locator("summary").click()
         assert details.evaluate("element => element.open")
-        assert "23101" in details.inner_text()
+        assert "23101" not in details.inner_text()
 
         request_link = card.locator(".service-doc-card__request")
         if width <= 720:
@@ -89,6 +89,9 @@ with sync_playwright() as playwright:
         assert has_query_value(page.url, "doc_idx", "23101")
         assert page.locator(".service-docs-request__document").count() == 1
         assert "Grundig" in page.locator(".service-docs-request__document").inner_text()
+        assert "23101" not in page.locator(
+            ".service-docs-request__document"
+        ).inner_text()
         assert page.locator(".service-docs-request > p").inner_text() == (
             "Bitte geben Sie Ihre Kontaktdaten ein."
         )
