@@ -62,6 +62,20 @@ with sync_playwright() as playwright:
         assert page.locator(".archive-source-card__button a").count() == 18
         assert page.locator(".archive-museum-finder__button a").count() == 1
 
+        gap_before_external_note = page.locator(
+            ".archive-sources__external-note-inner"
+        ).evaluate(
+            """
+            element => {
+                const note = element.closest('.archive-sources__external-note');
+                return element.getBoundingClientRect().top
+                    - note.previousElementSibling.getBoundingClientRect().bottom;
+            }
+            """
+        )
+        expected_gap = 32 if width <= 720 else 40
+        assert abs(gap_before_external_note - expected_gap) < 1
+
         external_links = page.locator(
             ".archive-source-card__button a, .archive-museum-finder__button a"
         )
